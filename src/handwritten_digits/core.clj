@@ -9,7 +9,7 @@
   (- b 128))
 
 (defn make-unsigned-byte-array [s]
-  (map byte-to-signed (make-byte-array s)))
+  (->> s (map byte-to-signed) make-byte-array))
  
 ;; reading mnist 
 ;; - http://csi701-group2.googlecode.com/svn-history/r13/trunk/populate-db/clojure/src/populate_db_clojure/core.clj
