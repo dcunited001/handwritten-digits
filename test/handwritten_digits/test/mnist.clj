@@ -31,7 +31,7 @@
 
 (deftest label-data-decode-test
   (let [decoded (gloss.io/decode label-codec label-bytes)]
-    ;; FIXME: failing?
+    ;; FIXME: failing? does decode return header data?
     ;; (is (= (decoded :num) 4))
     ;; (is (= (decoded :magic) label-magic-num))
     (is (= (decoded :labels) '(1 2 3 4)))))
@@ -56,7 +56,7 @@
 (deftest image-data-decode-test
   (let [decoded (gloss.io/decode image-codec image-bytes)]
     (prn decoded)
-    ;; FIXME: failing?
+    ;; FIXME: failing? does decode return header data?
     ;; (is (= (decoded :magic) image-magic-num))
     ;; (is (= (decoded :num) 2))
     ;; (is (= (decoded :rows) 4))
@@ -66,6 +66,13 @@
 
 (deftest image-body-decode-test
   (let [decoded (gloss.io/decode (image-body 4 4) image-body-bytes)]
-    (prn (map str decoded))
     (is (= (count decoded) 16))
 ))
+
+(deftest image-data-encode-test
+  (let [encoded (gloss.io/encode image-codec {:images [[1 2 3 4] [5 6 7 8]]
+                                              :rows 2
+                                              :cols 2} )]
+    ;;TODO: figure out interface to object returned by gloss.io/encode
+    (prn encoded)
+    ))
