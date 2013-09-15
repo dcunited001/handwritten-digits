@@ -42,6 +42,7 @@
     (ordered-map :images (repeated
                           (image-body (head :rows) (head :cols)) 
                           :prefix :none))
+    ;; TODO: add post-decoder to queue images for matrix translation?
     )))
 
 (defn image-body->header [data]

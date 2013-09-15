@@ -76,3 +76,15 @@
     ;;TODO: figure out interface to object returned by gloss.io/encode
     (prn encoded)
     ))
+
+;; (deftest full-labels-test
+;;   (let [file "data/train-labels-idx1-ubyte"
+;;         labels (:labels (gloss.io/decode label-codec (read-bytes file)))]
+;;     (prn (count labels))
+;;   ))
+
+;; (deftest full-images-test
+;;   (let [file "data/train-images-idx3-ubyte"
+;;         images (:images (gloss.io/decode image-codec (read-bytes file)))]
+;;     (prn (count images))
+;;   ))
