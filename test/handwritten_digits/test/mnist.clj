@@ -1,7 +1,8 @@
 (ns handwritten-digits.test.mnist
   (:require [clojure.test :refer :all]
             [gloss core io])
-  (:use [handwritten-digits mnist util]))
+  (:use [handwritten-digits mnist util]
+        [gloss.data.bytes]))
 
 (def label-bytes (read-bytes "test/data/labels-data"))
 (def label-header-bytes (read-bytes "test/data/labels-header"))
@@ -50,5 +51,15 @@
 (deftest labels-data-decode-test
   (let [decoded (gloss.io/decode mnist-labels-codec label-bytes)]
     (is (= (decoded :labels) '(1 2 3 4)))))
+
+(deftest labels-data-encode-test
+  (let [encoded (gloss.io/encode mnist-labels-codec {:labels '(1 2 3 4)})]
+    (prn encoded) ;; TODO: test this properly
+    ;;(prn (byte-count encoded)) ;; y u no byte-count (need convert-char-seqs from gloss tests)
+))
+
+;; (deftest images-data-decode-test
+;;   (let [decoded (gloss.io/decode mnist-images-codec label-bytes)]
+;;     (is (= (decoded :labels) '(1 2 3 4)))))
 
 
