@@ -51,7 +51,7 @@
 
 (deftest label-data-decode-test
   (let [decoded (gloss.io/decode label-codec label-bytes)]
-    (is (= (decoded :label) '(1 2 3 4)))))
+    (is (= (decoded :labels) '(1 2 3 4)))))
 
 (deftest label-data-encode-test
   (let [encoded (gloss.io/encode label-codec {:labels '(1 2 3 4)})]
