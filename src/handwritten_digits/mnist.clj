@@ -4,8 +4,8 @@
         ))
 
 ;; TODO: change header to validate magic-numbers
-(def images-magic-num 2051)
-(def labels-magic-num 2049)
+(def image-magic-num 2051)
+(def label-magic-num 2049)
 
 (defcodec label-header 
   (ordered-map :magic :uint32-be 
@@ -14,15 +14,16 @@
 (defn label-header->body [head]
   (compile-frame (ordered-map :labels (repeated :byte :prefix :none))))
 
-(defn label-body->header [body] 
+;; FIXME: ordered-map
+(defn label-body->header [data] 
   {:magic labels-magic-num 
-   :num (count (body :labels)) })
+   :num (count (data :labels)) })
 
   ;; FIXME: why does this fail when i use an ordered-map?
   ;; (ordered-map :magic labels-magic-num 
   ;;              :num (count body)))
 
-(defcodec labels-codec
+(defcodec label-codec
   (header label-header label-header->body label-body->header))
 
 (defcodec image-header 
@@ -43,10 +44,14 @@
                             (head :rows) 
                             (head :cols)))))))
 
-(defn image-body->header [body]
-  
+;; FIXME: ordered-map
+(defn image-body->header [data]
+  {:magic image-magic-num
+   :num (count (data :images))
+   :rows (data :rows)
+   :cols (data :cols)}
 )
 
-;; (defcodec images-codec
-;;   (header)
+;; (defcodec image-codec
+;;   (header image-header )
 ;; )

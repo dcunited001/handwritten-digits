@@ -11,7 +11,7 @@
 (def image-header-bytes (read-bytes "test/data/images-header"))
 
 (deftest label-header-encode-test
-  (let [magic labels-magic-num
+  (let [magic label-magic-num
         n 2
         encoded (gloss.io/encode label-header {:magic magic :num n})
         bytes label-header-bytes]
@@ -23,7 +23,7 @@
 
 (deftest label-header-decode-test 
   (let [decoded (gloss.io/decode label-header label-header-bytes)
-        magic labels-magic-num
+        magic label-magic-num
         n 4]
     (is (= (decoded :num) n))
     (is (= (decoded :magic) magic))
@@ -31,7 +31,7 @@
 
 (deftest image-header-decode-test
   (let [decoded (gloss.io/decode image-header image-header-bytes)
-        magic images-magic-num
+        magic image-magic-num
         n 2
         r 4
         c 4]
@@ -42,24 +42,24 @@
     ))
 
 ;; ;; FIXME: y u no defcodec
-;; (deftest labels-data-encode-test 
-;;   (let [labels '(1 2 3 4)
-;;         encoded (gloss.io/encode label-header labels)]
-;;   (is (= (encoded :labels) '(1 2 3 4)))
+;; (deftest label-data-encode-test 
+;;   (let [label '(1 2 3 4)
+;;         encoded (gloss.io/encode label-header label)]
+;;   (is (= (encoded :label) '(1 2 3 4)))
 ;;   ))
 
-(deftest labels-data-decode-test
-  (let [decoded (gloss.io/decode labels-codec label-bytes)]
-    (is (= (decoded :labels) '(1 2 3 4)))))
+(deftest label-data-decode-test
+  (let [decoded (gloss.io/decode label-codec label-bytes)]
+    (is (= (decoded :label) '(1 2 3 4)))))
 
-(deftest labels-data-encode-test
-  (let [encoded (gloss.io/encode labels-codec {:labels '(1 2 3 4)})]
+(deftest label-data-encode-test
+  (let [encoded (gloss.io/encode label-codec {:label '(1 2 3 4)})]
     (prn encoded) ;; TODO: test this properly
     ;;(prn (byte-count encoded)) ;; y u no byte-count (need convert-char-seqs from gloss tests)
 ))
 
-(deftest images-data-decode-test
-  (let [decoded (gloss.io/decode images-codec label-bytes)]
-    (is (= (decoded :labels) '(1 2 3 4)))))
+(deftest image-data-decode-test
+  (let [decoded (gloss.io/decode image-codec label-bytes)]
+    (is (= (decoded :label) '(1 2 3 4)))))
 
 
