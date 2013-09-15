@@ -4,11 +4,12 @@
   (:use [handwritten-digits mnist util]
         [gloss.data.bytes]))
 
-(def label-bytes (read-bytes "test/data/labels-data"))
-(def label-header-bytes (read-bytes "test/data/labels-header"))
+(def label-bytes (read-bytes "test/data/label-data"))
+(def label-header-bytes (read-bytes "test/data/label-header"))
 
-(def image-bytes (read-bytes "test/data/images-data"))
-(def image-header-bytes (read-bytes "test/data/images-header"))
+(def image-bytes (read-bytes "test/data/image-data"))
+(def image-body-bytes (read-bytes "test/data/image-body"))
+(def image-header-bytes (read-bytes "test/data/image-header"))
 
 (deftest label-header-encode-test
   (let [magic label-magic-num
