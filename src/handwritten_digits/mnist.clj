@@ -14,7 +14,6 @@
 (defn label-header->body [head]
   (compile-frame (ordered-map :labels (repeated :byte :prefix :none))))
 
-;; FIXME: ordered-map
 (defn label-body->header [data] 
   {:magic label-magic-num 
    :num (count (data :labels))})
@@ -32,19 +31,19 @@
                :rows :uint32-be
                :cols :uint32-be))
 
-(defn image-frame [r c]
+(defn image-body [r c]
   (compile-frame (finite-frame (* r c) (repeated :byte :prefix :none))))
 
 (defn image-header->body [head]
   (compile-frame 
    (finite-frame 
-    (head :num) 
-    (ordered-map :images
-                 (repeated (image-frame 
-                            (head :rows) 
-                            (head :cols)))))))
+    ;; TODO: have to count bytes, not frames? use prefix instead?
+    (* (head :num) (head :rows) (head :cols))
+    (ordered-map :images (repeated
+                          (image-body (head :rows) (head :cols)) 
+                          :prefix :none))
+    )))
 
-;; FIXME: ordered-map
 (defn image-body->header [data]
   {:magic image-magic-num
    :num (count (data :images))
