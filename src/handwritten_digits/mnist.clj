@@ -4,49 +4,49 @@
         ))
 
 ;; TODO: change header to validate magic-numbers
-(def mnist-images-magic-num 2051)
-(def mnist-labels-magic-num 2049)
+(def images-magic-num 2051)
+(def labels-magic-num 2049)
 
-(defcodec mnist-label-header 
+(defcodec label-header 
   (ordered-map :magic :uint32-be 
                :num :uint32-be))
 
-(defn mnist-label-header->body [head]
+(defn label-header->body [head]
   (compile-frame (ordered-map :labels (repeated :byte :prefix :none))))
 
-(defn mnist-label-body->header [body] 
-  {:magic mnist-labels-magic-num 
+(defn label-body->header [body] 
+  {:magic labels-magic-num 
    :num (count (body :labels)) })
 
   ;; FIXME: why does this fail when i use an ordered-map?
-  ;; (ordered-map :magic mnist-labels-magic-num 
+  ;; (ordered-map :magic labels-magic-num 
   ;;              :num (count body)))
 
-(defcodec mnist-labels-codec
-  (header mnist-label-header mnist-label-header->body mnist-label-body->header))
+(defcodec labels-codec
+  (header label-header label-header->body label-body->header))
 
-(defcodec mnist-image-header 
+(defcodec image-header 
   (ordered-map :magic :uint32-be
                :num :uint32-be
                :rows :uint32-be
                :cols :uint32-be))
 
-(defn mnist-image-frame [r c]
+(defn image-frame [r c]
   (compile-frame (finite-frame (* r c) (repeated :byte :prefix :none))))
 
-(defn mnist-image-header->body [head]
+(defn image-header->body [head]
   (compile-frame 
    (finite-frame 
     (head :num) 
     (ordered-map :labels 
-                 (repeated (mnist-image-frame 
+                 (repeated (image-frame 
                             (head :rows) 
                             (head :cols)))))))
 
-;; (defn mnist-image-body->header [body]
+(defn image-body->header [body]
+  
+)
 
-;; )
-
-;; (defcodec mnist-images-codec
+;; (defcodec images-codec
 ;;   (header)
 ;; )
