@@ -54,13 +54,18 @@
     (is (= (decoded :label) '(1 2 3 4)))))
 
 (deftest label-data-encode-test
-  (let [encoded (gloss.io/encode label-codec {:label '(1 2 3 4)})]
+  (let [encoded (gloss.io/encode label-codec {:labels '(1 2 3 4)})]
     (prn encoded) ;; TODO: test this properly
     ;;(prn (byte-count encoded)) ;; y u no byte-count (need convert-char-seqs from gloss tests)
 ))
 
 (deftest image-data-decode-test
-  (let [decoded (gloss.io/decode image-codec label-bytes)]
-    (is (= (decoded :label) '(1 2 3 4)))))
+  (let [decoded (gloss.io/decode image-codec image-bytes)]
+    (is (= (decoded :magic) image-magic-num))
+    (is (= (decoded :num) 2))
+    (is (= (decoded :rows) 4))
+    (is (= (decoded :cols) 4))
+    (is (= (count (decoded :images)) 2))
+))
 
-
+(deftest image-data-encode-test)
