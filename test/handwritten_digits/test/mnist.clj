@@ -3,13 +3,10 @@
             [gloss core io])
   (:use [handwritten-digits mnist util]))
 
-  ;; (def mnist-images-magic-num-byte-arr '(0x00 0x00 0x80 0x03))
-  ;; (def mnist-labels-magic-num-byte-arr '(0x00 0x00 0x80 0x01))
-
   (defn flatten-byte-arrays [data keys] 
     (-> (reduce #(conj %1 (data %2)) '() keys) 
         flatten 
-        make-unsigned-byte-array))
+        make-unchecked-byte-array))
 
   (def labels-data {:magic '(0x00 0x00 0x80 0x01)
                     :num '(0x00 0x00 0x00 0x04)
@@ -29,16 +26,22 @@
                               0x00 0x11 0xEE 0x00)
                     })
 
-  (def labels-decode (flatten-byte-arrays labels-data '(:magic :num :labels)))
-  (def images-decode (flatten-byte-arrays images-data '(:magic :num :rows :cols :image1 :image2)))
+  (def label-bytes (read-bytes "test/data/labels-data"))
+  (def image-bytes (read-bytes "test/data/images-data"))
 
   ;; FIXME: y u no defcodec
-  (deftest labels-data-encode-test 
-    (let [labels '(1 2 3 4)
-          encoded (gloss.io/encode mnist-label-header labels)]
-    (is (= (encoded :labels) '(1 2 3 4)))
-    ))
+  ;; (deftest labels-data-encode-test 
+  ;;   (let [labels '(1 2 3 4)
+  ;;         encoded (gloss.io/encode mnist-label-header labels)]
+  ;;   (is (= (encoded :labels) '(1 2 3 4)))
+  ;;   ))
 
-;; (deftest labels-data-decode-test
-;;   (let [labels-bin-data ( )]) ;; TODO: need to set up byte array
-;;  )
+  (deftest labels-data-decode-test
+    (let [decoded (gloss.io/decode
+                   mnist-label-header 
+                   label-bytes)]
+      (is (= (decoded :labels) '(1 2 3 4)))))
+    
+  (deftest a-test 
+    (prn (map str label-bytes)))
+
