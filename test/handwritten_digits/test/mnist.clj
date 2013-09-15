@@ -30,25 +30,6 @@
     (is (= (decoded :magic) magic))
     ))
 
-(deftest image-header-decode-test
-  (let [decoded (gloss.io/decode image-header image-header-bytes)
-        magic image-magic-num
-        n 2
-        r 4
-        c 4]
-    (is (= (decoded :magic) magic))
-    (is (= (decoded :num) n))
-    (is (= (decoded :rows) r))
-    (is (= (decoded :cols) c))
-    ))
-
-;; ;; FIXME: y u no defcodec
-;; (deftest label-data-encode-test 
-;;   (let [label '(1 2 3 4)
-;;         encoded (gloss.io/encode label-header label)]
-;;   (is (= (encoded :label) '(1 2 3 4)))
-;;   ))
-
 (deftest label-data-decode-test
   (let [decoded (gloss.io/decode label-codec label-bytes)]
     (is (= (decoded :labels) '(1 2 3 4)))))
@@ -67,5 +48,17 @@
     (is (= (decoded :cols) 4))
     (is (= (count (decoded :images)) 2))
 ))
+
+(deftest image-header-decode-test
+  (let [decoded (gloss.io/decode image-header image-header-bytes)
+        magic image-magic-num
+        n 2
+        r 4
+        c 4]
+    (is (= (decoded :magic) magic))
+    (is (= (decoded :num) n))
+    (is (= (decoded :rows) r))
+    (is (= (decoded :cols) c))
+    ))
 
 (deftest image-data-encode-test)
