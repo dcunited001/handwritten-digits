@@ -1,15 +1,13 @@
 (ns handwritten-digits.core)
 
-(ns handwritten-digits.util)
+(ns handwritten-digits.util
+  (:use [clojure.java.io :as io]))
 
-(defn make-byte-array [s] 
-  (byte-array (map #(byte %) s)))
-
-(defn byte-to-signed [b]
-  (- b 128))
-
-(defn make-unsigned-byte-array [s]
-  (->> s (map byte-to-signed) make-byte-array))
+(defn read-bytes [file] 
+  (with-open [input (io/input-stream file)
+              output (new java.io.ByteArrayOutputStream)]
+    (io/copy input output)
+    (.toByteArray output)))
  
 ;; reading mnist 
 ;; - http://csi701-group2.googlecode.com/svn-history/r13/trunk/populate-db/clojure/src/populate_db_clojure/core.clj
