@@ -16,11 +16,11 @@
 
 ;; FIXME: ordered-map
 (defn label-body->header [data] 
-  {:magic labels-magic-num 
-   :num (count (data :labels)) })
+  {:magic label-magic-num 
+   :num (count (data :labels))})
 
   ;; FIXME: why does this fail when i use an ordered-map?
-  ;; (ordered-map :magic labels-magic-num 
+  ;; (ordered-map :magic label-magic-num 
   ;;              :num (count body)))
 
 (defcodec label-codec
@@ -39,7 +39,7 @@
   (compile-frame 
    (finite-frame 
     (head :num) 
-    (ordered-map :labels 
+    (ordered-map :images
                  (repeated (image-frame 
                             (head :rows) 
                             (head :cols)))))))
@@ -52,6 +52,5 @@
    :cols (data :cols)}
 )
 
-;; (defcodec image-codec
-;;   (header image-header )
-;; )
+(defcodec image-codec
+  (header image-header image-header->body image-body->header))
