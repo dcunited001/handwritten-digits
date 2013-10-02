@@ -1,7 +1,5 @@
 (ns handwritten-digits.mnist
-  (:use [gloss core io]
-        ;;[incanter core stats charts]
-        ))
+  (:use [gloss core io]))
 
 ;; TODO: change header to validate magic-numbers
 (def image-magic-num 2051)
@@ -54,3 +52,4 @@
 
 (defcodec image-codec
   (header image-header image-header->body image-body->header))
+
