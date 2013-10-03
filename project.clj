@@ -5,8 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [incanter "1.5.4"]
-                 [gloss "0.2.2"]
-                 ])
+                 [gloss "0.2.2"]]
+  :jvm-opts ["-Xmx1g"])
 
 ;; reading mnist 
 ;; - http://csi701-group2.googlecode.com/svn-history/r13/trunk/populate-db/clojure/src/populate_db_clojure/core.clj
