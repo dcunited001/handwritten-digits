@@ -1,12 +1,54 @@
 (ns handwritten-digits.draw
   (:use [incanter core charts])
+  (:require [seesaw.core :as s]
+        [seesaw.graphics :as sg]
+        [seesaw.color :as scolor])
   (:gen-class))
 
-(declare ^:dynamic sizex)
-(declare ^:dynamic sizey)
-(declare ^:dynamic nx)
-(declare ^:dynamic ny)
-(declare ^:dynamic data)
+(defn make-canvas []
+  (s/canvas :id :canvas :background :black))
+
+(defn make-frame [sizex sizey]
+  (s/frame
+    :title      "Digits"
+    :on-close   :dispose
+    :resizable? false
+    :size       [sizex :by sizey]
+    :content    (make-canvas)))
+
+(defn show-frame [f]
+  (s/show! f))
+
+;; (defexample []
+;;   (frame 
+;;     :title "Canvas Example" 
+;;     :width 500 :height 300
+;;     :content 
+;;     (border-panel :hgap 5 :vgap 5 :border 5
+;;                   ; Create the canvas with initial nil paint function, i.e. just canvas
+;;                   ; will be filled with it's background color and that's it.
+;;                   :center (canvas :id :canvas :background "#BBBBDD" :paint nil)
+
+;;                   ; Some buttons to swap the paint function
+;;                   :south (horizontal-panel :items ["Switch canvas paint function: "
+;;                                                    (switch-paint-action "None" nil)
+;;                                                    (switch-paint-action "Rectangles" paint1)
+;;                                                    (switch-paint-action "Ovals" paint2)]))))
+
+  ;; (frame
+  ;;   :title "Gaidica"
+  ;;   :size  [600 :by 600]
+  ;;   :on-close :exit
+  ;;   :menubar (menubar :items [(menu :text "View" :items [(menu-item :class :refresh)])])
+  ;;   :content (border-panel
+  ;;              :border 5
+  ;;              :hgap 5
+  ;;              :vgap 5
+  ;;              :north  (make-toolbar)
+  ;;              :center (make-tabs)
+  ;;              :south (label :id :status :text "Ready")))
+
+;;buffered-image sizex sizey
 
 ;; apparently this isnt going to work (very easily)
 ;; - heat-map doesn't index [x y] nicely as integers =/
@@ -16,31 +58,28 @@
 ;; - instantiating a dummy chart (or creating a manual JFreeChart)
 ;; - using add-image to manually add the image to the chart.
 
-(defn get-pixel [x y]
-  ;; translate 2-d coordinates 
-  ;;   to retrieve from list of unwrapped matrices
-  (let [n (+ (quot x sizex) (* nx (quot y sizey)))
-        m (+ (mod  x sizex) (* sizex (mod y sizey)))]
-    (prn (str "X=" x " Y=" y " M=" m " N=" n))
-    (sel data m n)))
+;; (defn get-pixel [data x y sizex sizey nx ny]
+;;   ;; translate 2-d coordinates 
+;;   ;;   to retrieve from list of unwrapped matrices
+;;   (let [n (+ (quot x sizex) (* nx (quot y sizey)))
+;;         m (+ (mod  x sizex) (* sizex (mod y sizey)))]
+;;     (sel data m n)))
 
-(defn draw-digits [data sizex sizey nx ny]
-  (let [xmax (- (* sizex nx) 1)  
-        ymax (- (* sizey ny) 1)]
-    (binding [sizex sizex
-              sizey sizey
-              nx nx
-              ny ny
-              data data]
-      (heat-map get-pixel
-                0 xmax 0 ymax
-                :title "digits" 
-                :color false))))
+;; (defn create-digits-image [data sizex sizey nx ny]
+;;   ;;(let [img ])
+;; )
 
-  ;; (heat-map get-pixel 0 0 xmax ymax
-  ;;           :title "digits" 
-  ;;           :color false)))
+;; (defn draw-digits [data sizex sizey nx ny]
+;;   (let [xmax (- (* sizex nx) 1)  
+;;         ymax (- (* sizey ny) 1)]
+;;     (binding [sizex sizex
+;;               sizey sizey
+;;               nx nx
+;;               data data]
+;;       (heat-map get-pixel 0 xmax 0 ymax
+;;                 :title "digits" 
+;;                 :color false))))
 
-(defn draw-100-digits [data] 
-  (draw-digits (to-matrix (to-dataset (take 100 data))) 28 28 10 10))
+;; (defn draw-100-digits [data] 
+;;   (draw-digits (to-matrix (to-dataset (take 100 data))) 28 28 10 10))
 
