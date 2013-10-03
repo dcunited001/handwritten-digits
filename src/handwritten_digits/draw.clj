@@ -8,6 +8,14 @@
 (declare ^:dynamic ny)
 (declare ^:dynamic data)
 
+;; apparently this isnt going to work (very easily)
+;; - heat-map doesn't index [x y] nicely as integers =/
+
+;; visualizing this is going to require
+;; - creating java.awt.Image with matrix data
+;; - instantiating a dummy chart (or creating a manual JFreeChart)
+;; - using add-image to manually add the image to the chart.
+
 (defn get-pixel [x y]
   ;; translate 2-d coordinates 
   ;;   to retrieve from list of unwrapped matrices
