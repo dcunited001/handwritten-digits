@@ -12,6 +12,7 @@
     (println args)
 
     (draw/show-frame (draw/make-frame 280 280))
+    (draw/create-image 280 280)
 
     ;; the network has 
     ;; - an input layer with 784 inputs (28*28)

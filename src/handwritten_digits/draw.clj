@@ -19,6 +19,9 @@
 (defn show-frame [f]
   (s/show! f))
 
+(defn create-image [sizex sizey]
+  (sg/buffered-image sizex sizey))
+
 ;; (defexample []
 ;;   (frame 
 ;;     :title "Canvas Example" 
