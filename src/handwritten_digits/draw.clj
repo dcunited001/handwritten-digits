@@ -5,6 +5,9 @@
         [seesaw.color :as scolor])
   (:gen-class))
 
+;; incanter and awk images: http://pastebin.com/sYn517qh
+;; - https://github.com/joeatwork/nma.simple/blob/master/src/nma/demo.clj
+
 (defn make-canvas []
   (s/canvas :id :canvas :background :black))
 
@@ -20,7 +23,23 @@
   (s/show! f))
 
 (defn create-image [sizex sizey]
-  (sg/buffered-image sizex sizey))
+  (sg/buffered-image sizex sizey sg/buffered-image/TYPE_BYTE_GRAY))
+
+(defn draw-digits-on [img data sizex sizey nx ny]
+  (let [raster (. img getRaster)]
+    (doseq [c (range (- nx 1))
+            r (range (- ny 1))
+            m (range (* sizex sizey))]
+      (let [n (+ c (* r ny))
+            ix (mod m sizex)
+            iy (quot m sizey)
+            x (+ ix (* c sizex))
+            y (+ iy (* r sizey))])
+      (. raster setPixel y x (float-array 1 (sel data n m)))))
+
+(defn paint-digits-on [img cv] 
+  
+  )
 
 ;; (defexample []
 ;;   (frame 
