@@ -4,6 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
+                 [seesaw "1.4.3"]
                  [incanter "1.5.4"]
                  [gloss "0.2.2"]]
   :jvm-opts ["-Xmx1g"]
@@ -31,3 +32,9 @@
 ;; - post   http://comments.gmane.org/gmane.comp.java.clojure.aleph/21
 ;; - codecs https://github.com/andrewvc/engulf/blob/master/src/engulf/comm/netchan.clj
 ;; - tests  https://github.com/andrewvc/engulf/blob/master/test/engulf/test/comm/netchan_test.clj
+
+;; clojure and seesaw (swing)
+;; - http://daveray.github.io/seesaw/seesaw.graphics-api.html
+;; - http://icyrock.com/blog/2012/01/clojure-and-seesaw/
+;; - https://github.com/daveray/regenemies/blob/master/src/regenemies/ui.clj
+
