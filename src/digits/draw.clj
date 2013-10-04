@@ -5,23 +5,10 @@
         [seesaw.color :as scolor])
   (:gen-class))
 
-;; incanter and awk images: http://pastebin.com/sYn517qh
-;; - https://github.com/joeatwork/nma.simple/blob/master/src/nma/demo.clj
-
-;; use sprites?
-;; - http://www.coderanch.com/t/569886/GUI/java/efficient-spritesheet
-
-;; JPanel w/ proxy
-;; - http://stackoverflow.com/questions/1518933/image-processing-extending-jpanel-and-simulating-classes-in-clojure
-
-;; seesaw - java swing
-
 (gen-class :name digits.draw.Frame
            :prefix Frame-
            :extends java.swing.JFrame
            :main false)
-
-
 
 (defn make-canvas []
   (s/canvas :id :canvas :background :black :paint))

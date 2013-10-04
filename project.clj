@@ -39,3 +39,13 @@
 ;; - http://icyrock.com/blog/2012/01/clojure-and-seesaw/
 ;; - https://github.com/daveray/regenemies/blob/master/src/regenemies/ui.clj
 
+;; incanter and awk images: http://pastebin.com/sYn517qh
+;; - https://github.com/joeatwork/nma.simple/blob/master/src/nma/demo.clj
+
+;; use sprites?
+;; - http://www.coderanch.com/t/569886/GUI/java/efficient-spritesheet
+
+;; JPanel w/ proxy
+;; - http://stackoverflow.com/questions/1518933/image-processing-extending-jpanel-and-simulating-classes-in-clojure
+
+;; seesaw - java swing
