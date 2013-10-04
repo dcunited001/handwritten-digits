@@ -1,4 +1,4 @@
-(ns handwritten-digits.test.core
+(ns digits.test.core
   (:require [clojure.test :refer :all])
-  (:use [handwritten-digits.core]))
+  (:use [digits.core]))
 

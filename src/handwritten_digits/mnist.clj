@@ -1,4 +1,4 @@
-(ns handwritten-digits.mnist
+(ns digits.mnist
   (:use [gloss core io]))
 
 ;; TODO: change header to validate magic-numbers

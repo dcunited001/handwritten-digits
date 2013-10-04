@@ -1,4 +1,4 @@
-(ns handwritten-digits.draw
+(ns digits.draw
   (:use [incanter core charts])
   (:require [seesaw.core :as s]
         [seesaw.graphics :as sg]
@@ -8,38 +8,60 @@
 ;; incanter and awk images: http://pastebin.com/sYn517qh
 ;; - https://github.com/joeatwork/nma.simple/blob/master/src/nma/demo.clj
 
-(defn make-canvas []
-  (s/canvas :id :canvas :background :black))
+;; use sprites?
+;; - http://www.coderanch.com/t/569886/GUI/java/efficient-spritesheet
 
-(defn make-frame [sizex sizey]
+;; JPanel w/ proxy
+;; - http://stackoverflow.com/questions/1518933/image-processing-extending-jpanel-and-simulating-classes-in-clojure
+
+;; seesaw - java swing
+
+(gen-class :name digits.draw.Frame
+           :prefix Frame-
+           :extends java.swing.JFrame
+           :main false)
+
+
+
+(defn make-canvas []
+  (s/canvas :id :canvas :background :black :paint))
+
+(defn make-frame [sizex sizey & canvas]
   (s/frame
     :title      "Digits"
     :on-close   :dispose
     :resizable? false
     :size       [sizex :by sizey]
-    :content    (make-canvas)))
+    :content    (or canvas (make-canvas))))
 
 (defn show-frame [f]
   (s/show! f))
 
 (defn create-image [sizex sizey]
-  (sg/buffered-image sizex sizey sg/buffered-image/TYPE_BYTE_GRAY))
+  (sg/buffered-image sizex sizey java.awt.image.BufferedImage/TYPE_BYTE_GRAY))
 
 (defn draw-digits-on [img data sizex sizey nx ny]
   (let [raster (. img getRaster)]
     (doseq [c (range (- nx 1))
             r (range (- ny 1))
+            ix (range (- sizex 1))
+            iy (range (- sizey 1))
             m (range (* sizex sizey))]
-      (let [n (+ c (* r ny))
-            ix (mod m sizex)
-            iy (quot m sizey)
-            x (+ ix (* c sizex))
-            y (+ iy (* r sizey))])
-      (. raster setPixel y x (float-array 1 (sel data n m)))))
 
-(defn paint-digits-on [img cv] 
-  
-  )
+      (let [n (+ c (* r ny))
+            m (+ ix (* iy sizey))
+            x (+ ix (* c sizex))
+            y (+ iy (* r sizey))]
+
+        ;; TODO: howto set pixels in rows?
+        (. raster setPixel y x (float-array 1 (sel data n m)))
+))))
+
+;; passed as a callback
+;; (defn paint-digits-on [c g]
+;;   (-> g
+;;       (.drawImage ))
+;;   )
 
 ;; (defexample []
 ;;   (frame 

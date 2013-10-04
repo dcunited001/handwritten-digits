@@ -1,4 +1,4 @@
-(defproject handwritten-digits "0.1.0-SNAPSHOT"
+(defproject digits "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -8,7 +8,7 @@
                  [incanter "1.5.4"]
                  [gloss "0.2.2"]]
   :jvm-opts ["-Xmx1g"]
-  :main handwritten-digits.core)
+  :main digits.core)
 
 ;; reading mnist 
 ;; - http://csi701-group2.googlecode.com/svn-history/r13/trunk/populate-db/clojure/src/populate_db_clojure/core.clj

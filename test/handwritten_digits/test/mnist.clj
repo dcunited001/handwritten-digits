@@ -1,7 +1,7 @@
-(ns handwritten-digits.test.mnist
+(ns digits.test.mnist
   (:require [clojure.test :refer :all]
             [gloss core io])
-  (:use [handwritten-digits mnist util]
+  (:use [digits mnist util]
         [gloss.data.bytes]))
 
 (def label-bytes (read-bytes "test/data/label-data"))

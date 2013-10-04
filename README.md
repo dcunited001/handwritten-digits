@@ -1,4 +1,4 @@
-# handwritten-digits
+# digits
 
 A library to train/test [MNIST](http://yann.lecun.com/exdb/mnist/) handwritten digit data.
 

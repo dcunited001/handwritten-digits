@@ -1,5 +1,5 @@
-(ns handwritten-digits.util
-  (:use [handwritten-digits.mnist :as mnist]
+(ns digits.util
+  (:use [digits.mnist :as mnist]
         [incanter.core])
   (:require [gloss.io]
             [clojure.java.io :as io]))
