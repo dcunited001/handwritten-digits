@@ -8,6 +8,7 @@
                  [incanter "1.5.4"]
                  [gloss "0.2.2"]]
   :jvm-opts ["-Xmx1g"]
+  :aot [digits.draw.Frame]
   :main digits.core)
 
 ;; reading mnist 
