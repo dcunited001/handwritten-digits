@@ -4,8 +4,9 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [seesaw "1.4.3"]
-                 [incanter "1.5.4"]
+                 [clatrix "0.3.0"]
+                 ;;[seesaw "1.4.3"]
+                 ;;[incanter "1.5.4"]
                  [gloss "0.2.2"]]
   :jvm-opts ["-Xmx1g"]
 ;;  :aot [digits.draw.Frame]
