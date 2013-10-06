@@ -1,48 +1,69 @@
 (ns digits.draw
-  (:use [incanter core charts])
-  (:require [seesaw.core :as s]
-        [seesaw.graphics :as sg]
-        [seesaw.color :as scolor])
+  (:import (java.awt.image BufferedImage WritableRaster))
   (:gen-class))
 
-(gen-class :name digits.draw.Frame
-           :prefix Frame-
-           :extends java.swing.JFrame
-           :main false)
+(defn digit-image [data sizex sizey]
+  (prn data)
 
-(defn make-canvas []
-  (s/canvas :id :canvas :background :black :paint))
+  (-> (BufferedImage. sizex sizey BufferedImage/TYPE_BYTE_GRAY)
+      (.getRaster)
+      (.setPixels 0 0 (int sizex) (int sizey) (int-array data))
 
-(defn make-frame [sizex sizey & canvas]
-  (s/frame
-    :title      "Digits"
-    :on-close   :dispose
-    :resizable? false
-    :size       [sizex :by sizey]
-    :content    (or canvas (make-canvas))))
+      ;;doesn't work, because of type mismatch or something..
+       ;; (doto (BufferedImage. sizex sizey BufferedImage/TYPE_BYTE_GRAY)
+       ;;   (.setRGB 0 0 sizex sizey data 0 sizex))
+      
 
-(defn show-frame [f]
-  (s/show! f))
+))
 
-(defn create-image [sizex sizey]
-  (sg/buffered-image sizex sizey java.awt.image.BufferedImage/TYPE_BYTE_GRAY))
 
-(defn draw-digits-on [img data sizex sizey nx ny]
-  (let [raster (. img getRaster)]
-    (doseq [c (range (- nx 1))
-            r (range (- ny 1))
-            ix (range (- sizex 1))
-            iy (range (- sizey 1))
-            m (range (* sizex sizey))]
+;; (gen-class :name digits.draw.DigitsImage
+;;            :prefix DigitsImage-
+;;            :main false)
+ 
+;; (gen-class :name digits.draw.Frame
+;;            :prefix Frame-
+;;            :extends java.swing.JFrame
+;;            :main false)
 
-      (let [n (+ c (* r ny))
-            m (+ ix (* iy sizey))
-            x (+ ix (* c sizex))
-            y (+ iy (* r sizey))]
+;; (gen-class :name digits.draw.DigitsImage
+;;            :prefix DigitsImage-
+;;            :extends java.awt.image.BufferedImage
+;;            :main false)
 
-        ;; TODO: howto set pixels in rows?
-        (. raster setPixel y x (float-array 1 (sel data n m)))
-))))
+;; (defn make-canvas []
+;;   (s/canvas :id :canvas :background :black :paint))
+
+;; (defn make-frame [sizex sizey & canvas]
+;;   (s/frame
+;;     :title      "Digits"
+;;     :on-close   :dispose
+;;     :resizable? false
+;;     :size       [sizex :by sizey]
+;;     :content    (or canvas (make-canvas))))
+
+;; (defn show-frame [f]
+;;   (s/show! f))
+
+;; (defn create-image [sizex sizey]
+;;   (sg/buffered-image sizex sizey java.awt.image.BufferedImage/TYPE_BYTE_GRAY))
+
+;; (defn draw-digits-on [img data sizex sizey nx ny]
+;;   (let [raster (. img getRaster)]
+;;     (doseq [c (range (- nx 1))
+;;             r (range (- ny 1))
+;;             ix (range (- sizex 1))
+;;             iy (range (- sizey 1))
+;;             m (range (* sizex sizey))]
+
+;;       (let [n (+ c (* r ny))
+;;             m (+ ix (* iy sizey))
+;;             x (+ ix (* c sizex))
+;;             y (+ iy (* r sizey))]
+
+;;         ;; TODO: howto set pixels in rows?
+;;         (. raster setPixel y x (float-array 1 (sel data n m)))
+;; ))))
 
 ;; passed as a callback
 ;; (defn paint-digits-on [c g]
