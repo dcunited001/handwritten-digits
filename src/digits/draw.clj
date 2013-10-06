@@ -3,7 +3,7 @@
   (:gen-class))
 
 (defn digit-image [data sizex sizey]
-  (prn data)
+  ;;(prn data)
 
   (-> (BufferedImage. sizex sizey BufferedImage/TYPE_BYTE_GRAY)
       (.getRaster)
