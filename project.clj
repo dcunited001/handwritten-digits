@@ -8,7 +8,7 @@
                  [incanter "1.5.4"]
                  [gloss "0.2.2"]]
   :jvm-opts ["-Xmx1g"]
-  :aot [digits.draw.Frame]
+;;  :aot [digits.draw.Frame]
   :main digits.core)
 
 ;; reading mnist 
@@ -48,4 +48,12 @@
 ;; JPanel w/ proxy
 ;; - http://stackoverflow.com/questions/1518933/image-processing-extending-jpanel-and-simulating-classes-in-clojure
 
-;; seesaw - java swing
+;; use quil & processing for images?
+;; - create-image to create an image
+;; - then write pixels to it
+;; - then write using set-image
+
+;; double buffering in clojure (2009)
+;; - http://www.curiousattemptbunny.com/2009/01/double-buffering-render-loop-in-clojure.html
+;; - http://briancarper.net/blog/520/making-an-rpg-in-clojure-part-one-of-many
+
