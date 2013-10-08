@@ -1,23 +1,57 @@
 (ns digits.core
-  (:use [incanter core charts])
   (:require [digits.util :as util]
             [digits.mnist :as mnist]
             [digits.net :as net]
-            [digits.draw :as draw])
+            [digits.draw :as draw]
+            [digits.ui :as ui])
   (:gen-class :main true))
 
-(defn generic-chart [sizex sizey] (function-plot sin sizex sizey))
+(defn print-time [] (-> (java.util.Date.) prn))
+
+(defonce images (util/read-images "data/train-images-idx3-ubyte"))
+(defonce labels (util/read-labels "data/train-labels-idx1-ubyte"))
+
+(def sizex 28)
+(def sizey 28)
+
+(def nx 10)
+(def ny 10)
+
+;; store images in atoms, then swap & render
+(def img-digits (atom (draw/new-buffered-image sizex sizey)))
+(def img-middle-layer (atom (draw/new-buffered-image sizex sizey)))
+
+(def running (atom true))
+
+(defn run []
+  ;; create a neural net object
+
+  (reset! running true)
+  ;;(while @running
+    (let [canvas (ui/make-canvas net/paint)
+          frame (ui/make-frame (* sizex nx) (* sizey ny) canvas)]
+      (-> frame
+          (ui/add-behaviors)
+          (ui/show-frame))
+      )
+    ;;)
+
+  ;; (reset! running true)
+  ;; (while @running 
+  ;;   (dotimes [i PERIODS] 
+  ;;     (when @running
+  ;;       (show (frame i) :title "Mobile Activity in Singapore" :on-close #(reset! running false))
+  ;;       (Thread/sleep 40))))
+
+)
 
 (defn -main [& args]
-  (let [sizex 28
-        sizey 28
-        labels (:labels (util/read-labels "data/train-labels-idx1-ubyte"))
-        images (:images (util/read-images "data/train-images-idx3-ubyte"))
-        digits-chart (generic-chart (* sizex 10) (* sizey 10))]
+  
+  (draw/digits-image (take (* nx ny) images) sizex sizey nx ny) ;; 15ms to draw - 59 to draw & write
+  (print-time)
+  (prn "Drawing 100 digits")
 
-    (doto digits-chart
-      (add-image 0 0 (draw/digit-image (head images) sizex sizey))
-      view)
+  (run)
 
     ;; (let [digits-img (draw/create-image 280 280)
     ;;       canvas (draw/make-canvas)
@@ -37,4 +71,4 @@
     ;; - theta1 matrix (25 x (784+1))
     ;; - theta2 matrix (10 x (25+1))
 
-))
+)
