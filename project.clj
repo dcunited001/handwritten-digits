@@ -5,7 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [clatrix "0.3.0"]
-                 ;;[seesaw "1.4.3"]
+                 [seesaw "1.4.3"]
                  ;;[incanter "1.5.4"]
                  [gloss "0.2.2"]]
   :jvm-opts ["-Xmx1g"]
@@ -58,3 +58,5 @@
 ;; - http://www.curiousattemptbunny.com/2009/01/double-buffering-render-loop-in-clojure.html
 ;; - http://briancarper.net/blog/520/making-an-rpg-in-clojure-part-one-of-many
 
+;; updating bufferedimages in swing using core.matrix data
+;; - http://clojurefun.wordpress.com/2013/08/31/visualising-singapores-mobile-phone-data-with-core-matrix/
