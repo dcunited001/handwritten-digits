@@ -1,6 +1,5 @@
 (ns digits.util
-  (:use [digits.mnist :as mnist]
-        [incanter.core])
+  (:use [digits.mnist :as mnist])
   (:require [gloss.io]
             [clojure.java.io :as io]))
 
@@ -13,14 +12,4 @@
 (defn read-labels [file] (gloss.io/decode label-codec (read-bytes file)))
 (defn read-images [file] (gloss.io/decode image-codec (read-bytes file)))
 
-(defn t-labels []
-  (let [labels (:labels (read-labels "data/train-labels-idx1-ubyte"))]
-    (to-matrix (to-dataset labels))))
-
-(defn t-images []
-  (let [images (:images (read-images "data/train-images-idx3-ubyte"))]
-    (to-matrix (to-dataset images))))
-
-;; pass training function in to generic training alg?
-
-(defn view-labels [labels] (with-data labels (view $data)))
+;;(defn view-labels [labels] (with-data labels (view $data)))
