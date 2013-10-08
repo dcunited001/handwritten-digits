@@ -1,20 +1,29 @@
 (ns digits.net
-  (:require [digits.util :as util]
-            [incanter.core :as inc]))
+  (:require [clatrix.core :as m]
+            [digits.util :as util])
+)
 
 ;; TODO: protocol for different algorithms
 
-(defn with-training-batch [labels images fn]
+;; repaint
+
+(defn paint [c g]
+  
+)
+
+(defn train [images labels & data]
+  (take 100 images)
   
 )
 
 (defn init-theta1 [num-units sizex sizey]
-  ;; create matrix
-  ;; fill with random data
+  ;; TODO add bias unit
+  (rand (* sizex sizey) num-units)
 )
 
 (defn init-theta2 [num-digits num-units]
-
+  ;; TODO add bias unit
+  (rand (* num-units) num-digits)
 )
 
 
