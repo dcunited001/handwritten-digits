@@ -14,7 +14,7 @@
     img))
 
 (defn digits-image [data sizex sizey nx ny]
-  (let [img (new-buffered-image (* nx sizex) (* ny sizey) BufferedImage/TYPE_BYTE_GRAY)
+  (let [img (new-buffered-image (* nx sizex) (* ny sizey))
         raster (.getRaster img)]
     (doseq [c (range nx)
             r (range ny)]
