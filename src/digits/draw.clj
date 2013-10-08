@@ -1,26 +1,34 @@
 (ns digits.draw
-  (:import (java.awt.image BufferedImage WritableRaster))
+  (:import (java.awt.image BufferedImage WritableRaster)
+           (javax.imageio ImageIO)
+           (java.io File IOException))
   (:gen-class))
 
+(defn new-buffered-image [sizex sizey] (BufferedImage. sizex sizey BufferedImage/TYPE_BYTE_GRAY))
+
 (defn digit-image [data sizex sizey]
-  ;;(prn data)
+;;  (prn data)
+  (let [img (new-buffered-image sizex sizey)]
+    (-> (.getRaster img)
+        (.setPixels 0 0 sizex sizey (int-array data)))
+    img))
 
-  (-> (BufferedImage. sizex sizey BufferedImage/TYPE_BYTE_GRAY)
-      (.getRaster)
-      (.setPixels 0 0 (int sizex) (int sizey) (int-array data))
-
-      ;;doesn't work, because of type mismatch or something..
-       ;; (doto (BufferedImage. sizex sizey BufferedImage/TYPE_BYTE_GRAY)
-       ;;   (.setRGB 0 0 sizex sizey data 0 sizex))
-      
-
+(defn digits-image [data sizex sizey nx ny]
+  (let [img (new-buffered-image (* nx sizex) (* ny sizey) BufferedImage/TYPE_BYTE_GRAY)
+        raster (.getRaster img)]
+    (doseq [c (range nx)
+            r (range ny)]
+      (let [n (+ c (* r ny))
+            offx (* c sizex)
+            offy (* r sizey)]
+        (. raster setPixels offy offx sizex sizey (int-array (nth data n)))
+        ))
+    img
 ))
 
+(defn write-png [image filename]
+  (ImageIO/write image "png" (File. filename)))
 
-;; (gen-class :name digits.draw.DigitsImage
-;;            :prefix DigitsImage-
-;;            :main false)
- 
 ;; (gen-class :name digits.draw.Frame
 ;;            :prefix Frame-
 ;;            :extends java.swing.JFrame
@@ -47,23 +55,6 @@
 
 ;; (defn create-image [sizex sizey]
 ;;   (sg/buffered-image sizex sizey java.awt.image.BufferedImage/TYPE_BYTE_GRAY))
-
-;; (defn draw-digits-on [img data sizex sizey nx ny]
-;;   (let [raster (. img getRaster)]
-;;     (doseq [c (range (- nx 1))
-;;             r (range (- ny 1))
-;;             ix (range (- sizex 1))
-;;             iy (range (- sizey 1))
-;;             m (range (* sizex sizey))]
-
-;;       (let [n (+ c (* r ny))
-;;             m (+ ix (* iy sizey))
-;;             x (+ ix (* c sizex))
-;;             y (+ iy (* r sizey))]
-
-;;         ;; TODO: howto set pixels in rows?
-;;         (. raster setPixel y x (float-array 1 (sel data n m)))
-;; ))))
 
 ;; passed as a callback
 ;; (defn paint-digits-on [c g]
