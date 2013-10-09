@@ -24,11 +24,12 @@
 (def running (atom true))
 
 (defn run []
-  ;; create a neural net object
+
+  (reset! img-digits (draw/digits-image (take 100 images) sizex sizey nx ny))
 
   (reset! running true)
   ;;(while @running
-    (let [canvas (ui/make-canvas net/paint)
+    (let [canvas (ui/make-canvas (net/paint img-digits img-middle-layer))
           frame (ui/make-frame (* sizex nx) (* sizey ny) canvas)]
       (-> frame
           (ui/add-behaviors)
@@ -46,7 +47,9 @@
 )
 
 (defn -main [& args]
-  
+
+  ;;(prn (take 1 images))
+  ;;(prn (int-array (nth images 1)))
   (draw/digits-image (take (* nx ny) images) sizex sizey nx ny) ;; 15ms to draw - 59 to draw & write
   (print-time)
   (prn "Drawing 100 digits")

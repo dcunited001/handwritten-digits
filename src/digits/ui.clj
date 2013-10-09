@@ -5,11 +5,13 @@
             [seesaw.color :as color]))
 
 (defn add-behaviors [root] 
-  (let [canvas (select root [:#canvas])]
-    ;;(listen root :window-closed (fn [_] (.stop timer)))
-    (config! canvas
-             ;; :paint (fn [c g] (paint c g))
-             :focusable? true)
+  (let [state-atom (atom 1)
+        canvas (select root [:#canvas])
+        timer (timer (fn [_] (swap! state-atom + 1))
+                     :delay 1000)]
+    
+    (listen root :window-closed (fn [_] (.stop timer)))
+    (config! canvas :focusable? true)
     (.requestFocusInWindow canvas)
     root
   )
@@ -18,15 +20,14 @@
 (defn make-canvas [paint-fn]
   (canvas :id :canvas :background :black :paint paint-fn))
 
-(defn make-frame [sizex sizey & canvas]
-  (-> (frame
-         :title      "Digits"
-         :on-close   :dispose
-         :resizable? false
-         :size       [sizex :by sizey]
-         :content    canvas)
-      )
-)
+(defn make-frame [sizex sizey canvas]
+  (frame
+   :title      "Digits"
+   :on-close   :dispose
+   :resizable? false
+   :size       [sizex :by sizey]
+   :content    canvas)
+  )
 
 (defn show-frame [f]
   (show! f))
