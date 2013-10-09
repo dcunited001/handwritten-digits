@@ -12,8 +12,7 @@
 )
 
 (defn train [images labels & data]
-  (take 100 images)
-  
+
 )
 
 (defn init-theta1 [num-units sizex sizey]

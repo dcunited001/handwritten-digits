@@ -8,8 +8,8 @@
 
 (defn print-time [] (-> (java.util.Date.) prn))
 
-(defonce images (util/read-images "data/train-images-idx3-ubyte"))
-(defonce labels (util/read-labels "data/train-labels-idx1-ubyte"))
+(defonce images (:images (util/read-images "data/train-images-idx3-ubyte")))
+(defonce labels (:labels (util/read-labels "data/train-labels-idx1-ubyte")))
 
 (def sizex 28)
 (def sizey 28)
