@@ -25,10 +25,8 @@
 )
 
 (defn add-bias-unit [matrix]
-
-)
+  (m/hstack (m/+ 1 (m/zeros (m/nrows matrix) 1)) matrix))
 
 (defn remove-bias-unit [matrix]
-
-)
+  (m/get matrix (range 0 (m/nrows matrix)) (range 1 (m/ncols matrix))))
 
