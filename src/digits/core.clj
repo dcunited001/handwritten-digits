@@ -28,9 +28,9 @@
 (def running (atom true))
 
 (defn run []
-  (let [lambda 0.05
-        theta1 (net/init-theta 25 (* sizex sizey) 0 0.1)
-        theta2 (net/init-theta 10 25 0 0.1)]
+  (let [lambda 0.00005
+        theta1 (net/init-theta 25 (* sizex sizey) 0 0.2)
+        theta2 (net/init-theta 10 25 0 0.2)]
 
     (reset! num-processed 0)
     (reset! running true)
@@ -48,14 +48,7 @@
                               nx ny 
                               num-processed 
                               img-digits img-theta1 img-theta2) 
-             [lambda images labels theta1 theta2]))
-
-    ;; (reset! running true)
-    ;; (while @running 
-    ;;   (dotimes [i PERIODS] 
-    ;;     (when @running
-    ;;       (show (frame i) :title "Mobile Activity in Singapore" :on-close #(reset! running false))
-    ;;       (Thread/sleep 40))))
+             [lambda (take 10000 images) (take 10000 labels) theta1 theta2]))
 
 ))
 
@@ -67,23 +60,5 @@
   (run)
   (print-time)
   (prn "Finished")
-
-    ;; (let [digits-img (draw/create-image 280 280)
-    ;;       canvas (draw/make-canvas)
-    ;;       frame (draw/make-frame 280 280 canvas)
-    ;;       ]
-    ;; (draw/show-frame (draw/make-frame 280 280))
-    ;; (draw/draw-digits-on digits-img 
-    ;;                      (take 100 images)
-    ;;                      28 28 10 10)    
-    ;; )
-
-    ;; the network has 
-    ;; - an input layer with 784 inputs (28*28)
-    ;; - a hidden layer with 25 units
-    ;; - an output layer with 10 units
-    ;; - input matrix ((784+1) x n) n=batch size
-    ;; - theta1 matrix (25 x (784+1))
-    ;; - theta2 matrix (10 x (25+1))
 
 )
