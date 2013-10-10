@@ -23,3 +23,7 @@
 (deftest remove-bias-unit-test
   (let [rm (remove-bias-unit matr)]
     (is (= (m/ncols rm) (+ -1 (m/ncols matr))))))
+
+(deftest labels-to-binary-matrix-test
+  (let [labels (m/matrix [0 1 2 3 4])]
+    (is (= (labels-to-binary-matrix 5 labels) (m/eye 5)))))
