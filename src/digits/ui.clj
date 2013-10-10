@@ -3,13 +3,13 @@
   (:require [seesaw.graphics :as graphics]
             [seesaw.bind :as b]
             [seesaw.color :as color]))
-(def refresh-rate 100)
+(def refresh-rate 200)
 
 (defn add-behaviors [root] 
   (let [state-atom (atom 1)
         canvas (select root [:#canvas])
         timer (timer (fn [_] (swap! state-atom + 1))
-                     :delay 100)]
+                     :delay refresh-rate)]
     
     (listen root :window-closed (fn [_] (.stop timer)))
 
