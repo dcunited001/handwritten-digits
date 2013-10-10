@@ -24,8 +24,8 @@
 (def running (atom true))
 
 (defn run []
-  (let [theta1 (net/init-theta1 25 sizex sizey)
-        theta2 (net/init-theta2 10 25)]
+  (let [theta1 (net/init-theta 25 (* sizex sizey) 0 1)
+        theta2 (net/init-theta 10 25 0 1)]
 
 ;;  (reset! img-middle-layer (draw/digits-image (take 100 )))
 
