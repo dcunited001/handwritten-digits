@@ -29,8 +29,8 @@
 
 (defn run []
   (let [lambda 0.05
-        theta1 (net/init-theta 25 (* sizex sizey) 0 1)
-        theta2 (net/init-theta 10 25 0 1)]
+        theta1 (net/init-theta 25 (* sizex sizey) 0 0.1)
+        theta2 (net/init-theta 10 25 0 0.1)]
 
     (reset! num-processed 0)
     (reset! running true)
