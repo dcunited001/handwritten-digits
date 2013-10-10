@@ -5,11 +5,12 @@
 
 ;; TODO: protocol for different algorithms
 
-(defn paint [& images]
+(defn paint [num-processed & images]
   (fn [c g]
     (.drawImage g @(first images) 0 0 nil)
-    (.drawImage g @(second images) 300 0 nil))
-)
+    (.drawImage g @(second images) 300 0 nil)
+    (.drawString g (str @num-processed) 0 300)
+))
 
 (defn add-bias-unit [matrix]
   (m/hstack (m/+ 1 (m/zeros (m/nrows matrix) 1)) matrix))
@@ -44,7 +45,7 @@
   "Returns a function that can process data
     m - batch size
     img-atoms references of image atoms to update"
-  [batch-size sizex sizey nx ny 
+  [batch-size sizex sizey nx ny num-processed-atom
    & img-atoms]
   
   (fn process [lambda img lbl t1 t2]
@@ -53,9 +54,13 @@
           X (add-bias-unit (m/matrix input))
           y (take 100 (m/matrix (take batch-size lbl)))]
       (if (> remaining 0)
+        ;; currently each iteration takes between 20-30 ms (just init/draw input/theta1)
         (do (reset! (first img-atoms) (draw/digits-image input sizex sizey nx ny))
             (reset! (second img-atoms) (draw/digits-image (convert-to-img-seq t1) sizex sizey 5 5))
-            (process lambda (drop 100 img) (drop 100 lbl) t1 t2))
+            (-> (java.util.Date.) prn)
+            (prn @num-processed-atom)
+            (swap! num-processed-atom + batch-size)
+            (recur lambda (drop 100 img) (drop 100 lbl) t1 t2))
         )
       )
     

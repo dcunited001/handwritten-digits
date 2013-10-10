@@ -20,6 +20,7 @@
 ;; store images in atoms, then swap & render
 (def img-digits (atom (draw/new-buffered-image sizex sizey)))
 (def img-middle-layer (atom (draw/new-buffered-image sizex sizey)))
+(def num-processed (atom 0))
 
 (def running (atom true))
 
@@ -31,13 +32,13 @@
 
   (reset! running true)
   ;;(while @running
-    (let [canvas (ui/make-canvas (net/paint img-digits img-middle-layer))
+    (let [canvas (ui/make-canvas (net/paint num-processed img-digits img-middle-layer))
           frame (ui/make-frame (* sizex nx) (* sizey ny) canvas)]
       (-> frame
           (ui/add-behaviors)
           (ui/show-frame))
 
-      ((net/process-net (* nx ny) sizex sizey nx ny img-digits img-middle-layer) 1 images labels theta1 theta2))
+      ((net/process-net (* nx ny) sizex sizey nx ny num-processed img-digits img-middle-layer) 1 images labels theta1 theta2))
 
   ;; (reset! running true)
   ;; (while @running 
