@@ -3,11 +3,12 @@
             [clatrix.core :as m])
   (:use [digits.net]))
 
-(def matr (m/matrix [[0 1 2 3][4 5 6 7]]))
+(def matr (m/matrix [[0 1 2 3]
+                     [4 5 6 7]]))
 
 (deftest sigmoid-test
   (let [sig (sigmoid matr)]
-    (is (= 0.5 (m/get sig 0 0))))
+    (is (= 0.5 (m/get sig 0 0)))))
 
 (deftest sigmoid-gradient-test
   (let [sig (sigmoid matr)
