@@ -17,20 +17,16 @@
 (defn remove-bias-unit [matrix]
   (m/get matrix (range 0 (m/nrows matrix)) (range 1 (m/ncols matrix))))
 
-(defn init-theta1 [num-units sizex sizey]
-  (let [mu 0 sigma 1]
-    (add-bias-unit (m/rnorm mu sigma (* sizex sizey) num-units))))
+(defn init-theta [nr nc mu sigma]
+  (m/rnorm mu sigma nr (+ 1 nc)))
 
-(defn init-theta2 [num-digits num-units]
-  (let [mu 0 sigma 1]
-    (add-bias-unit (m/rnorm mu sigma num-digits num-units))))
-
-(defn convert-to-image-seq 
+(defn convert-to-img-seq 
   "Preps a theta matrix for printing 
     by removing the bias unit 
     and scaling all values to 0-255"
-  [matrix] 
-  (remove-bias-unit matrix)
+  [mat]
+  ;; FIXME: scale with (* 255 (sigmoid mat))
+  (m/as-vec (remove-bias-unit mat))
 )
 
 (defn sigmoid 
