@@ -28,7 +28,8 @@
 (def running (atom true))
 
 (defn run []
-  (let [theta1 (net/init-theta 25 (* sizex sizey) 0 1)
+  (let [lambda 0.05
+        theta1 (net/init-theta 25 (* sizex sizey) 0 1)
         theta2 (net/init-theta 10 25 0 1)]
 
     (reset! num-processed 0)
@@ -47,7 +48,7 @@
                               nx ny 
                               num-processed 
                               img-digits img-theta1 img-theta2) 
-             [1 images labels theta1 theta2]))
+             [lambda images labels theta1 theta2]))
 
     ;; (reset! running true)
     ;; (while @running 
