@@ -1,11 +1,8 @@
 (ns digits.net
   (:require [clatrix.core :as m]
-            [digits.util :as util])
-)
+            [digits.util :as util]))
 
 ;; TODO: protocol for different algorithms
-
-;; repaint
 
 (defn paint [& images]
   (fn [c g]
@@ -34,7 +31,7 @@
     and scaling all values to 0-255"
   [matrix] 
   (remove-bias-unit matrix)
-  )
+)
 
 (defn sigmoid 
   "Runs the sigmoid function against values in the matrix"
@@ -45,5 +42,5 @@
   "Calculates the sigmoid gradient for values in a matrix.
      Assumes the matrix has a domain within 0 and 1 (sigmoid output)"
   [z]
-  (m/mult z (m/- z 1)))
+  (m/mult z (m/- 1 z)))
 

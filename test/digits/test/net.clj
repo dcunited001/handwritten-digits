@@ -17,9 +17,9 @@
 
 (deftest add-bias-unit-test
   (let [added (add-bias-unit matr)]
-    (is (= (m/ncols added) (- 1 (m/ncols matr))))
-    (is (= 1 (m/get added 0 0)))))
+    (is (= (m/ncols added) (+ 1 (m/ncols matr))))
+    (is (= 1.0 (m/get added 0 0)))))
 
 (deftest remove-bias-unit-test
   (let [rm (remove-bias-unit matr)]
-    (is (= (m/ncols rm) (+ 1 (m/ncols matr))))))
+    (is (= (m/ncols rm) (+ -1 (m/ncols matr))))))
