@@ -5,11 +5,11 @@
 
 ;; TODO: protocol for different algorithms
 
-(defn paint [num-processed & images]
+(defn paint [num-processed & img-atoms]
   (fn [c g]
-    (.drawImage g @(first images) 0 0 nil)
-    (.drawImage g @(second images) 300 0 nil)
-    (.drawImage g @(nth images 2) 300 150 nil)
+    (.drawImage g @(first img-atoms) 0 0 nil)
+    (.drawImage g @(second img-atoms) 300 0 nil)
+    (.drawImage g @(nth img-atoms 2) 300 150 nil)
     (.drawString g (str @num-processed) 300 280)
 ))
 
