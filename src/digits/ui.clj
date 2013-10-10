@@ -11,8 +11,13 @@
                      :delay 1000)]
     
     (listen root :window-closed (fn [_] (.stop timer)))
+
     (config! canvas :focusable? true)
     (.requestFocusInWindow canvas)
+
+    (b/bind state-atom
+            (b/b-do [state] (repaint! canvas)))
+
     root
   )
 )
