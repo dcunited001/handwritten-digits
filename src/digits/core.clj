@@ -61,13 +61,12 @@
 
 (defn -main [& args]
 
-  ;;(prn (take 1 images))
-  ;;(prn (int-array (nth images 1)))
-  (draw/digits-image (take (* nx ny) images) sizex sizey nx ny) ;; 15ms to draw - 59 to draw & write
   (print-time)
-  (prn "Drawing 100 digits")
+  (prn "Starting")
 
   (run)
+  (print-time)
+  (prn "Finished")
 
     ;; (let [digits-img (draw/create-image 280 280)
     ;;       canvas (draw/make-canvas)
