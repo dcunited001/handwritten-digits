@@ -7,7 +7,6 @@
 (defn new-buffered-image [sizex sizey] (BufferedImage. sizex sizey BufferedImage/TYPE_BYTE_GRAY))
 
 (defn digit-image [data sizex sizey]
-;;  (prn data)
   (let [img (new-buffered-image sizex sizey)]
     (-> (.getRaster img)
         (.setPixels 0 0 sizex sizey (int-array data)))
@@ -18,10 +17,15 @@
         raster (.getRaster img)]
     (doseq [c (range nx)
             r (range ny)]
+      ;;(prn (str "C: " c " R: " r))
       (let [n (+ c (* r ny))
             offx (* c sizex)
-            offy (* r sizey)]
-        (. raster setPixels offy offx sizex sizey (int-array (nth data n)))
+            offy (* r sizey)
+            d (nth data n [])]
+        
+        (if (> (count d) 0)
+          ;; FIXME: can't print theta2 with 5 5 5 2, but can print with 5 5 5 5
+          (. raster setPixels offy offx sizex sizey (int-array d)))
         ))
     img
 ))

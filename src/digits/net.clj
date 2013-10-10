@@ -9,7 +9,8 @@
   (fn [c g]
     (.drawImage g @(first images) 0 0 nil)
     (.drawImage g @(second images) 300 0 nil)
-    (.drawString g (str @num-processed) 0 300)
+    (.drawImage g @(nth images 2) 300 150 nil)
+    (.drawString g (str @num-processed) 300 280)
 ))
 
 (defn add-bias-unit [matrix]
@@ -49,14 +50,16 @@
    & img-atoms]
   
   (fn process [lambda img lbl t1 t2]
-    (let [remaining (count lbl)
-          input (take batch-size img)
-          X (add-bias-unit (m/matrix input))
-          y (take 100 (m/matrix (take batch-size lbl)))]
-      (if (> remaining 0)
+    (if (> (count lbl) 0 )
+      (let [remaining (count lbl)
+            input (take batch-size img)
+            X (add-bias-unit (m/matrix input))
+            y (take 100 (m/matrix (take batch-size lbl)))]
         ;; currently each iteration takes between 20-30 ms (just init/draw input/theta1)
         (do (reset! (first img-atoms) (draw/digits-image input sizex sizey nx ny))
             (reset! (second img-atoms) (draw/digits-image (convert-to-img-seq t1) sizex sizey 5 5))
+            (reset! (nth img-atoms 2) (draw/digits-image (convert-to-img-seq t2) 5 5 5 5))
+
             (-> (java.util.Date.) prn)
             (prn @num-processed-atom)
             (swap! num-processed-atom + batch-size)
