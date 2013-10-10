@@ -24,8 +24,10 @@
 (def running (atom true))
 
 (defn run []
+  (let [theta1 (net/init-theta1 25 sizex sizey)
+        theta2 (net/init-theta2 10 25)]
 
-  (reset! img-digits (draw/digits-image (take 100 images) sizex sizey nx ny))
+;;  (reset! img-middle-layer (draw/digits-image (take 100 )))
 
   (reset! running true)
   ;;(while @running
@@ -34,6 +36,9 @@
       (-> frame
           (ui/add-behaviors)
           (ui/show-frame))
+
+      
+      (reset! img-digits (draw/digits-image (take 100 images) sizex sizey nx ny))
       )
     ;;)
 
@@ -44,6 +49,7 @@
   ;;       (show (frame i) :title "Mobile Activity in Singapore" :on-close #(reset! running false))
   ;;       (Thread/sleep 40))))
 
+)
 )
 
 (defn -main [& args]
