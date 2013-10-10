@@ -44,8 +44,6 @@
 
 (defn labels-to-binary-matrix [num-labels lbls]
   (let [one-to-k (m/+ 1 (m/zeros (m/nrows lbls) num-labels))]
-    (prn one-to-k)
-    (prn lbls)
     (m/map-indexed (fn [i j v] 
                      (if (= j (int (m/get lbls i 0))) 
                        1 0))
@@ -63,14 +61,9 @@
       (let [remaining (count lbl)
             input (take batch-size img)
             X (add-bias-unit (m/matrix input))
-            y (take 100 (m/matrix (take batch-size lbl)))
-            Y (labels-to-binary-matrix num-labels y)
+            y (m/matrix (take batch-size lbl))
+            Y (labels-to-binary-matrix num-labels y)]
 
-            ;;K (m/matrix (range 0 num-labels))
-            ;; translate y into binary matrix
-            ;;one-to-k (m/zeros batch-size num-labels)
-            ;;Y (m/map-indexed one-to-k #(if (= %2 (m/get y %1 1))))
-            ]
         ;; currently each iteration takes between 20-30 ms (just init/draw input/theta1)
         (do (reset! (first img-atoms) (draw/digits-image input sizex sizey nx ny))
             (reset! (second img-atoms) (draw/digits-image (convert-to-img-seq t1) sizex sizey 5 5))
@@ -81,10 +74,27 @@
                   z3 (m/* a2 (m/t t2))
                   a3 (sigmoid z3)
                   ones (m/+ 1 (m/zeros num-labels 1))
-                  
-                  ;;cost (m/div () batch-size)
-                  ])
+                  k-ones (m/+ 1 (m/zeros batch-size 1))
+                  cost (/
+                        (+
+                         (-> (m/mult Y (m/log a3)) ;;gets sum when incorrect
+                             (m/* ones)
+                             (m/t)
+                             (m/* k-ones)
+                             (m/* -1)
+                             (m/get 0 0))
+                         (-> (m/- 1 Y)
+                             (m/mult (m/log (m/- 1 a3)))
+                             (m/* ones)
+                             (m/t)
+                             (m/* k-ones)
+                             (m/* -1)
+                             (m/get 0 0)))
+                        (double batch-size))
+                  ]
      
+            (prn cost)
+)
 ;; cost = (-sum((Y .* log(A3')) * Ones) - sum(((1-Y) .* log(1-A3')) * Ones))/m;
 
             (swap! num-processed-atom + batch-size)
