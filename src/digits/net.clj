@@ -44,3 +44,32 @@
   [z]
   (m/mult z (m/- 1 z)))
 
+(defn process-net
+  "Returns a function that can process data
+    m - batch size
+    img-atoms references of image atoms to update"
+  [batch-size sizex sizey nx ny 
+   & img-atoms]
+  
+  (fn process [lambda img lbl t1 t2]
+    (let [remaining (count lbl)
+          input (take batch-size img)
+          X (add-bias-unit (m/matrix input))
+          y (take 100 (m/matrix (take batch-size lbl)))]
+      (if (> remaining 0)
+        (do (reset! (first img-atoms) (draw/digits-image input sizex sizey nx ny))
+            (reset! (second img-atoms) (draw/digits-image (convert-to-img-seq t1) sizex sizey 5 5))
+            (process lambda (drop 100 img) (drop 100 lbl) t1 t2))
+        )
+      )
+    
+    ;; z(2) => theta1
+    ;; a(2) => sigmoid()
+    ;; @(first img-atoms) => (make-img (scale&resize a(2)))
+
+))
+    ;;
+    ;; update 1st image reference
+    ;; update 2nd image reference
+    ;;
+    
