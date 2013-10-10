@@ -30,8 +30,6 @@
   (let [theta1 (net/init-theta 25 (* sizex sizey) 0 1)
         theta2 (net/init-theta 10 25 0 1)]
 
-    (draw/write-png (draw/digits-image (net/convert-to-img-seq theta2) 5 5 5 5) "test.png")
-
     (reset! num-processed 0)
     (reset! running true)
     ;;(while @running
