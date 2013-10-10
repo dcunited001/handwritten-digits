@@ -8,7 +8,7 @@
   (let [state-atom (atom 1)
         canvas (select root [:#canvas])
         timer (timer (fn [_] (swap! state-atom + 1))
-                     :delay 1000)]
+                     :delay 200)]
     
     (listen root :window-closed (fn [_] (.stop timer)))
 
