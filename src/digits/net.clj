@@ -1,14 +1,14 @@
 (ns digits.net
   (:require [clatrix.core :as m]
-            [digits.util :as util]))
+            [digits.util :as util]
+            [digits.draw :as draw]))
 
 ;; TODO: protocol for different algorithms
 
 (defn paint [& images]
   (fn [c g]
     (.drawImage g @(first images) 0 0 nil)
-    ;; draw second image
-    )
+    (.drawImage g @(second images) 300 0 nil))
 )
 
 (defn add-bias-unit [matrix]
