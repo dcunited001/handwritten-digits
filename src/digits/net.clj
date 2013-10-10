@@ -13,6 +13,9 @@
     (.drawString g (str @num-processed) 300 280)
 ))
 
+(defn ones [r c]
+  (m/+ 1 (m/zeros r c)))
+
 (defn add-bias-unit [matrix]
   (m/hstack (m/+ 1 (m/zeros (m/nrows matrix) 1)) matrix))
 
