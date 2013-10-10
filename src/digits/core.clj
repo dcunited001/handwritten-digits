@@ -37,10 +37,7 @@
           (ui/add-behaviors)
           (ui/show-frame))
 
-      
-      (reset! img-digits (draw/digits-image (take 100 images) sizex sizey nx ny))
-      )
-    ;;)
+      ((net/process-net (* nx ny) sizex sizey nx ny img-digits img-middle-layer) 1 images labels theta1 theta2))
 
   ;; (reset! running true)
   ;; (while @running 
