@@ -80,7 +80,7 @@
           (m/* m-ones)
           (m/* -1)
           (m/get 0 0)))
-     (double n))
+     (double n))))
  
 (defn process-net
   "Returns a function that can process data
@@ -106,35 +106,54 @@
                   a2 (add-bias-unit (sigmoid z2))
                   z3 (m/* a2 (m/t t2))
                   a3 (sigmoid z3)
-                  ones (m/+ 1 (m/zeros num-labels 1))
-                  k-ones (m/+ 1 (m/zeros batch-size 1))
-                  cost (/
-                        (+
-                         (-> (m/mult Y (m/log a3)) ;;gets sum when incorrect
-                             (m/* ones)
-                             (m/t)
-                             (m/* k-ones)
-                             (m/* -1)
-                             (m/get 0 0))
-                         (-> (m/- 1 Y)
-                             (m/mult (m/log (m/- 1 a3)))
-                             (m/* ones)
-                             (m/t)
-                             (m/* k-ones)
-                             (m/* -1)
-                             (m/get 0 0)))
-                        (double batch-size))
+
+                  t1-reg (remove-bias-unit t1)
+                  t2-reg (remove-bias-unit t2)
+
+                  d3 (m/- a3 Y)
+
+                  ;; foo (do (prn d3) 
+                  ;;        (prn t2-reg)
+                  ;;        (m/* d3 t2-reg))
+
+                  d2 (m/mult (m/* d3 t2-reg)
+                             (m/t (sigmoid-gradient (sigmoid z2))))
+
+                  ;; bar (do (prn a2) 
+                  ;;        (prn d3)
+                  ;;        (m/* d3 t2-reg))
+
+                  ;; FIXME: add t1-grad/t2-grad correctly to t1/t2 
+                  ;;   - hstack zeros onto theta and add
+                  ;; FIXME: figure out what to do with cost result
+                  ;;   - refer to fmincg and weep
+                  
+                  t2-grad (m/t (m/div (m/* (m/t a2) d3) batch-size))
+                  t1-grad (m/t (m/div (m/* (m/t X) d2) batch-size))
+
+                  baz (do 
+                        (prn t1)
+                        (prn t1-grad)
+                        (prn t2)
+                        (prn t2-grad))                  
+
+                  cost (cost-function batch-size num-labels Y a3)
+
+                  reg (* (/ lambda (* 2 batch-size))
+                         (+ (regularize-theta t1-reg)
+                            (regularize-theta t2-reg)))
+                  cost-reg (+ cost reg)
                   ]
      
-            (prn cost)
-)
-;; cost = (-sum((Y .* log(A3')) * Ones) - sum(((1-Y) .* log(1-A3')) * Ones))/m;
+            ;; (prn cost)
+            ;; (prn reg)
 
             (swap! num-processed-atom + batch-size)
             
             ;;(-> (java.util.Date.) prn)
             ;;(prn @num-processed-atom)
-            (recur lambda (drop 100 img) (drop 100 lbl) t1 t2))
+            (recur lambda (drop 100 img) (drop 100 lbl) (m/+ t1 t1-grad) (m/+ t2 t2-grad))
+            )
         )
       )
     
@@ -142,7 +161,7 @@
     ;; a(2) => sigmoid()
     ;; @(first img-atoms) => (make-img (scale&resize a(2)))
 
-))
+)))
     ;;
     ;; update 1st image reference
     ;; update 2nd image reference
