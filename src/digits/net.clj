@@ -46,12 +46,42 @@
 )
 
 (defn labels-to-binary-matrix [num-labels lbls]
-  (let [one-to-k (m/+ 1 (m/zeros (m/nrows lbls) num-labels))]
+  (let [one-to-k (ones (m/nrows lbls) num-labels)]
     (m/map-indexed (fn [i j v] 
                      (if (= j (int (m/get lbls i 0))) 
                        1 0))
                    one-to-k)))
 
+(defn regularize-theta 
+  "Takes a theta matrix and regularizes it into a scalar"
+  [t]
+  (-> (m/mult t t)
+      (m/* (ones (m/ncols t) 1))
+      (m/* (ones 1 (m/nrows t)))
+      (m/get 0 0)))
+
+(defn cost-function 
+  "Get the cost for fitting theta1/theta2 to the input labels"
+  [n k lbls out]
+  (let [k-ones (ones k 1)
+        m-ones (ones n 1)]
+    (/
+     (+
+      (-> (m/mult lbls (m/log out))
+          (m/* k-ones)
+          (m/t)
+          (m/* m-ones)
+          (m/* -1)
+          (m/get 0 0))
+      (-> (m/- 1 lbls)
+          (m/mult (m/log (m/- 1 out)))
+          (m/* k-ones)
+          (m/t)
+          (m/* m-ones)
+          (m/* -1)
+          (m/get 0 0)))
+     (double n))
+ 
 (defn process-net
   "Returns a function that can process data
     m - batch size
