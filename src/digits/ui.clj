@@ -30,7 +30,7 @@
    :title      "Digits"
    :on-close   :dispose
    :resizable? false
-   :size       [sizex :by sizey]
+   :size       [(* 2 sizex) :by (* 2 sizey)]
    :content    canvas)
   )
 
