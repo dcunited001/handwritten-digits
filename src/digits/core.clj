@@ -16,6 +16,7 @@
 
 (def nx 10)
 (def ny 10)
+(def nlabels 10)
 
 ;; store images in atoms, then swap & render
 (def img-digits (atom (draw/new-buffered-image sizex sizey)))
@@ -32,6 +33,7 @@
 
     (reset! num-processed 0)
     (reset! running true)
+
     ;;(while @running
     (let [canvas (ui/make-canvas (net/paint num-processed img-digits img-theta1 img-theta2))
           frame (ui/make-frame (* sizex nx) (* sizey ny) canvas)]
@@ -40,6 +42,7 @@
           (ui/show-frame))
 
       (apply (net/process-net (* nx ny) 
+                              nlabels
                               sizex sizey 
                               nx ny 
                               num-processed 
@@ -53,8 +56,7 @@
     ;;       (show (frame i) :title "Mobile Activity in Singapore" :on-close #(reset! running false))
     ;;       (Thread/sleep 40))))
 
-)
-)
+))
 
 (defn -main [& args]
 
