@@ -90,6 +90,46 @@
                     (/ (* 2 nr) 3))
              (range (/ nc 3) 
                     (/ (* 2 nc) 3)))))
+
+;; Wolfe Conditions
+;; Polack-Ribiere flavor of conjugate gradients
+;; line-search using quadratic/polynomial approximations
+;; Wolfe-Powell stopping criteria & slope ratio 
+;; - used for guessing initial step sizes
+
+(defn fmincg [cost-fn]
+  (let [rho 0.01   ;; rho & sigma are constants in the wolfe-powell conditions
+        sig   0.5
+        limit 0.1  ;; don't reevaluate within 0.1 of the limit of the current bracket
+        ext   3.0  ;; extrapolate maximum 3 times the current bracket
+        max   20   ;; max 20 function evaluations per line search
+        ratio 100  ;; max slope ratio
+
+        ;; with given input/theta, get an initial cost/d-theta
+        ;; get cost d-theta
+
+        ;; set search direction to be steepest
+        ;; - set s to (- d-theta)
+        
+        ;; set d1 to -s' * s (this is the slope)
+        
+        ;; set z1 to red/(1-d1)
+
+        ])
+)
+
+(defn get-theta-gradient [input theta delta n λ]
+  ;; at this point, theta should have the first col removed (theta-regularized)
+  (let [theta-reg (m/hstack (m/zeros (m/nrows theta) 1) 
+                            theta)]
+  (m/+ (-> (m/t input)
+           (m/* delta)
+           (m/div n)
+           (m/t))
+       (-> (/ λ n)
+           (m/mult theta-reg))
+       )))
+
  
 (defn process-net
   "Returns a function that can process data
@@ -124,10 +164,8 @@
                   d2 (m/mult (m/* d3 t2-reg)
                              (m/t (sigmoid-gradient (sigmoid z2))))
 
-                  t2-grad (m/+ (m/t (m/div (m/* (m/t a2) d3) batch-size))
-                               (m/mult (/ λ batch-size) (m/hstack (m/zeros (m/nrows t2-reg) 1) t2-reg)))
-                  t1-grad (m/+ (m/t (m/div (m/* (m/t X) d2) batch-size))
-                               (m/mult (/ λ batch-size) (m/hstack (m/zeros (m/nrows t1-reg) 1) t1-reg)))
+                  t2-grad (get-theta-gradient a2 t2-reg d3 batch-size λ)
+                  t1-grad (get-theta-gradient X t1-reg d2 batch-size λ)
                   
                   cost (cost-function batch-size num-labels Y a3)
 
