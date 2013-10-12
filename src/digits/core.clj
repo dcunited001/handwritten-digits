@@ -28,9 +28,9 @@
 (def running (atom true))
 
 (defn run []
-  (let [lambda 0.00005
-        theta1 (net/init-theta 25 (* sizex sizey) 0 0.2)
-        theta2 (net/init-theta 10 25 0 0.2)]
+  (let [λ 1
+        theta1 (net/init-theta 25 (* sizex sizey) 0 0.12)
+        theta2 (net/init-theta 10 25 0 0.12)]
 
     (reset! num-processed 0)
     (reset! running true)
@@ -38,17 +38,18 @@
     ;;(while @running
     (let [canvas (ui/make-canvas (net/paint num-processed img-digits img-theta1 img-theta2))
           frame (ui/make-frame (* sizex nx) (* sizey ny) canvas)]
+      
       (-> frame
           (ui/add-behaviors)
           (ui/show-frame))
 
       (apply (net/process-net (* nx ny) 
                               nlabels
-                              sizex sizey 
-                              nx ny 
-                              num-processed 
-                              img-digits img-theta1 img-theta2) 
-             [lambda (take 10000 images) (take 10000 labels) theta1 theta2]))
+                              sizex sizey
+                              nx ny
+                              num-processed
+                              img-digits img-theta1 img-theta2)
+             [λ (take 10000 images) (take 10000 labels) theta1 theta2]))
 
 ))
 
