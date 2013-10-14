@@ -10,7 +10,8 @@
     (.drawImage g @(first img-atoms) 0 0 nil)
     (.drawImage g @(second img-atoms) 300 0 nil)
     (.drawImage g @(nth img-atoms 2) 300 150 nil)
-    (.drawString g (str @num-processed) 300 280)
+    (.setColor g (java.awt.Color/GREEN))
+    (.drawString g (str "Training: " @num-processed) 300 280)
 ))
 
 (defn ones [r c]
