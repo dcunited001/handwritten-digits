@@ -30,4 +30,9 @@
 
 (deftest unroll-to-vec-test
   (let [mat (m/matrix [[1 5][2 6][3 7][4 8]])]
-    (is (= (unroll-to-vec mat) (m/t (m/matrix [1 2 3 4 5 6 7 8]))))))
+    (is (= (unroll-to-vec mat) (m/matrix [1 2 3 4 5 6 7 8])))))
+
+(deftest unroll-theta-to-vec-test 
+  (let [m1 (m/matrix [[1 3][2 4]])
+        m2 (m/matrix [[5 7][6 8]])]
+    (is (= (unroll-theta-to-vec m1 m2) (m/matrix [1 2 3 4 5 6 7 8])))))
