@@ -135,10 +135,41 @@
            (m/div n)
            (m/t))
        (-> (/ λ n)
-           (m/mult theta-reg))
-       )))
+           (m/mult theta-reg)))))
 
- 
+(defn get-cost-and-gradient [λ batch-size num-labels X y Y t1 t2]
+  (let [z2 (m/* X (m/t t1))
+        a2 (add-bias-unit (sigmoid z2))
+        z3 (m/* a2 (m/t t2))
+        a3 (sigmoid z3)
+
+        t1-reg (remove-bias-unit t1)
+        t2-reg (remove-bias-unit t2)
+        
+        cost (cost-function batch-size num-labels Y a3)
+
+        reg (* (/ λ (* 2 batch-size))
+               (+ (regularize-theta t1-reg)
+                  (regularize-theta t2-reg)))
+
+        cost-reg (+ cost reg)
+
+        d3 (m/- a3 Y)
+
+        d2 (m/mult (m/* d3 t2-reg)
+                   (m/t (sigmoid-gradient (sigmoid z2))))
+
+        t2-grad (get-theta-gradient a2 t2-reg d3 batch-size λ)
+        t1-grad (get-theta-gradient X t1-reg d2 batch-size λ)
+        ]
+    [cost-reg t1-grad t2-grad]
+))
+
+;; TODO: 
+;; - refactor cost function
+;; - outline functions needed for fmincg
+;; - restructure process-net into fmincg
+
 (defn process-net
   "Returns a function that can process data
     m - batch size
