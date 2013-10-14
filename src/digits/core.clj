@@ -38,12 +38,12 @@
     ;;(while @running
     (let [canvas (ui/make-canvas (net/paint num-processed img-digits img-theta1 img-theta2))
           frame (ui/make-frame (* sizex nx) (* sizey ny) canvas)]
-      
+
       (-> frame
           (ui/add-behaviors)
           (ui/show-frame))
 
-      (apply (net/process-net (* nx ny) 
+      (apply (net/process-net (* nx ny)
                               nlabels
                               sizex sizey
                               nx ny
@@ -51,7 +51,7 @@
                               img-digits img-theta1 img-theta2)
              [λ (take 10000 images) (take 10000 labels) theta1 theta2]))
 
-))
+    ))
 
 (defn -main [& args]
 
@@ -62,4 +62,4 @@
   (print-time)
   (prn "Finished")
 
-)
+  )
