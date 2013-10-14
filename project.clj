@@ -4,10 +4,20 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [clatrix "0.3.0"]
+                 ;;[clatrix "0.3.0"] ;; loading from dcunited001/clatrix
+                 [slingshot "0.10.3"]
+                 [org.jblas/jblas "1.2.3"]
+                 [net.mikera/core.matrix "0.7.2"]
+
                  [seesaw "1.4.3"]
                  ;;[incanter "1.5.4"]
                  [gloss "0.2.2"]]
+
+  ;; get clatrix from github
+  :plugins [[lein-git-deps "0.0.1-SNAPSHOT"]]
+  :git-dependencies [["https://github.com/dcunited001/clatrix.git" "reshape"]]
+  :source-paths ["src" ".lein-git-deps/clatrix/src/"]
+  
   :jvm-opts ["-Xmx1g"]
 ;;  :aot [digits.draw.Frame]
   :main digits.core)
