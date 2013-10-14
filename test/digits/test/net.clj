@@ -27,3 +27,7 @@
 (deftest labels-to-binary-matrix-test
   (let [labels (m/matrix [0 1 2 3 4])]
     (is (= (labels-to-binary-matrix 5 labels) (m/eye 5)))))
+
+(deftest unroll-to-vec-test
+  (let [mat (m/matrix [[1 5][2 6][3 7][4 8]])]
+    (is (= (unroll-to-vec mat) (m/t (m/matrix [1 2 3 4 5 6 7 8]))))))
