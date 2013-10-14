@@ -111,12 +111,20 @@
         ;; set search direction to be steepest
         ;; - set s to (- d-theta)
         
-        ;; set d1 to -s' * s (this is the slope)
+        ;; set d1 to -s' * s (this is the slope, apparently)
         
         ;; set z1 to red/(1-d1)
 
         ])
 )
+
+(defn set-images [atoms input t1 t2 sizex sizey nx ny]
+  (reset! (nth atoms 0) (draw/digits-image input sizex sizey nx ny))
+  (reset! (nth atoms 1) (draw/digits-image (convert-to-img-seq t1) sizex sizey 5 5))
+  (reset! (nth atoms 2) (draw/digits-image (convert-to-img-seq t2) 5 5 5 5)))
+
+(defn unroll-to-vec [mat]
+  (m/reshape mat 1 (* (m/ncols mat) (m/nrows mat))))
 
 (defn get-theta-gradient [input theta delta n λ]
   ;; at this point, theta should have the first col removed (theta-regularized)
