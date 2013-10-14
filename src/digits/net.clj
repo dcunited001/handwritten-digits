@@ -116,16 +116,28 @@
         
         ;; set z1 to red/(1-d1)
 
-        ])
-)
+        ]))
 
 (defn set-images [atoms input t1 t2 sizex sizey nx ny]
   (reset! (nth atoms 0) (draw/digits-image input sizex sizey nx ny))
   (reset! (nth atoms 1) (draw/digits-image (convert-to-img-seq t1) sizex sizey 5 5))
   (reset! (nth atoms 2) (draw/digits-image (convert-to-img-seq t2) 5 5 5 5)))
+;;TODO: show t1-grad && t2-grad?
 
 (defn unroll-to-vec [mat]
-  (m/reshape mat 1 (* (m/ncols mat) (m/nrows mat))))
+  (m/t (m/reshape mat 1 (* (m/ncols mat) (m/nrows mat)))))
+
+;; should unroll
+;; [(28*28) x 25]
+;; [25 x 10]
+;; into a [19850 x 1] vector
+(defn unroll-theta-to-vec [t1 t2]
+  (m/vstack (unroll-to-vec t1) (unroll-to-vec t2)))
+
+(defn roll-theta-to-mat [vec sizex sizey nmid nlbl]
+  (let [split-at (* sizex sizey nmid)]
+    [(m/reshape (m/slice vec _ (range 0 split-at)) (* sizex sizey) nmid)
+     (m/reshape (m/slice vec _ (range split-at (m/nrows vec))) nmid nlbl)]))
 
 (defn get-theta-gradient [input theta delta n λ]
   ;; at this point, theta should have the first col removed (theta-regularized)
