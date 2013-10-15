@@ -202,53 +202,23 @@
             X (add-bias-unit (m/matrix input))
             y (m/matrix (take batch-size lbl))
             Y (labels-to-binary-matrix num-labels y)]
+        (let [[step-cost 
+               step-t1-grad 
+               step-t2-grad] (get-cost-and-gradient λ batch-size num-labels X y Y t1 t2)]
+
+          ;;(roll-theta-to-mat (unroll-theta-to-vec t1 t2) sizex sizey 25 10)
+          (prn step-cost)
+          )
+
+        (set-images img-atoms input t1 t2 sizex sizey nx ny)
 
         ;; currently each iteration takes between 20-30 ms (just init/draw input/theta1)
-        (do (reset! (first img-atoms) (draw/digits-image input sizex sizey nx ny))
-            (reset! (second img-atoms) (draw/digits-image (convert-to-img-seq t1) sizex sizey 5 5))
-            (reset! (nth img-atoms 2) (draw/digits-image (convert-to-img-seq t2) 5 5 5 5))
-
-            (let [z2 (m/* X (m/t t1))
-                  a2 (add-bias-unit (sigmoid z2))
-                  z3 (m/* a2 (m/t t2))
-                  a3 (sigmoid z3)
-
-                  t1-reg (remove-bias-unit t1)
-                  t2-reg (remove-bias-unit t2)
-
-                  d3 (m/- a3 Y)
-
-                  d2 (m/mult (m/* d3 t2-reg)
-                             (m/t (sigmoid-gradient (sigmoid z2))))
-
-                  t2-grad (get-theta-gradient a2 t2-reg d3 batch-size λ)
-                  t1-grad (get-theta-gradient X t1-reg d2 batch-size λ)
-                  
-                  cost (cost-function batch-size num-labels Y a3)
-
-                  reg (* (/ λ (* 2 batch-size))
-                         (+ (regularize-theta t1-reg)
-                            (regularize-theta t2-reg)))
-
-                  cost-reg (+ cost reg)
-                  ]
-
-            (swap! num-processed-atom + batch-size)
-            
-            ;;(-> (java.util.Date.) prn)
-            ;;(prn @num-processed-atom)
-            (recur λ (drop 100 img) (drop 100 lbl) (m/+ t1 t1-grad) (m/+ t2 t2-grad))
-            )
+        (swap! num-processed-atom + batch-size)
+       
+        ;;(-> (java.util.Date.) prn)
+        ;;(prn @num-processed-atom)
+        (recur λ (drop 100 img) (drop 100 lbl) t1 t2)
         )
       )
     
-    ;; z(2) => theta1
-    ;; a(2) => sigmoid()
-    ;; @(first img-atoms) => (make-img (scale&resize a(2)))
-
-)))
-    ;;
-    ;; update 1st image reference
-    ;; update 2nd image reference
-    ;;
-    
+    ))
