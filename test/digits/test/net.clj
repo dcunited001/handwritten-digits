@@ -38,6 +38,6 @@
     (is (= (unroll-theta-to-vec m1 m2) (m/matrix [1 2 3 4 5 6 7 8])))))
 
 (deftest roll-theta-to-mat-test
-  (let [m1 (m/matrix [[1 2 3 4] [5 6 7 8]])
-        m2 (m/matrix [[1 2] [3 4]])]
-  (is (= [m1 m2] (roll-theta-to-mat (unroll-theta-to-vec m1 m2) 2 2 2 2)))))
+  (let [m1 (m/matrix [[1 2 3] [4 5 6] [7 8 9] [10 11 12]])
+        m2 (m/matrix [[1 2 3 4 5] [6 7 8  9 10] [11 12 13 14 15]])]
+  (is (= [m1 m2] (roll-theta-to-mat (unroll-theta-to-vec m1 m2) 2 2 3 5)))))

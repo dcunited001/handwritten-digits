@@ -136,8 +136,13 @@
 
 (defn roll-theta-to-mat [vec sizex sizey nmid nlbl]
   (let [split-at (* sizex sizey nmid)]
-    [(m/reshape (m/slice vec _ (range 0 split-at)) (* sizex sizey) nmid)
-     (m/reshape (m/slice vec _ (range split-at (m/nrows vec))) nmid nlbl)]))
+
+    ;;(prn (count t1-range))
+    ;;(prn (count t2-range))
+    ;;(prn (m/slice vec t1-range 0))
+
+    [(m/reshape (m/slice vec (range 0 split-at) 0) (* sizex sizey) nmid)
+     (m/reshape (m/slice vec (range split-at (m/nrows vec)) 0) nmid nlbl)]))
 
 (defn get-theta-gradient [input theta delta n λ]
   ;; at this point, theta should have the first col removed (theta-regularized)
