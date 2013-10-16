@@ -183,6 +183,36 @@
     [cost-reg t1-grad t2-grad]
 ))
 
+;; Wolfe Conditions
+;; Polack-Ribiere flavor of conjugate gradients
+;; line-search using quadratic/polynomial approximations
+;; Wolfe-Powell stopping criteria & slope ratio 
+;; - used for guessing initial step sizes
+
+(defn fmincg [cost-fn]
+  (let [rho 0.01   ;; rho & sigma are constants in the wolfe-powell conditions
+        sig   0.5
+        limit 0.1  ;; don't reevaluate within 0.1 of the limit of the current bracket
+        ext   3.0  ;; extrapolate maximum 3 times the current bracket
+        max   20   ;; max 20 function evaluations per line search
+        ratio 100  ;; max slope ratio
+
+        ;; with given input/theta, get an initial cost/d-theta
+        ;; get cost d-theta
+
+        ;; set search direction to be steepest
+        ;; - set s to (- d-theta)
+        
+        ;; set d1 to -s' * s (this is the slope, apparently)
+        
+        ;; set z1 to red/(1-d1)
+
+        ]))
+
+(defn line-search [cost-fn]
+
+)
+
 ;; TODO: 
 ;; - refactor cost function
 ;; - outline functions needed for fmincg
@@ -217,7 +247,7 @@
        
         ;;(-> (java.util.Date.) prn)
         ;;(prn @num-processed-atom)
-        (recur λ (drop 100 img) (drop 100 lbl) t1 t2)
+        (recur λ (drop batch-size img) (drop batch-size lbl) t1 t2)
         )
       )
     
