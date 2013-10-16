@@ -155,7 +155,7 @@
        (-> (/ λ n)
            (m/mult theta-reg)))))
 
-(defn get-cost-and-gradient [λ batch-size num-labels X y Y t1 t2]
+(defn get-cost-and-gradient [λ batch-size num-labels X Y t1 t2]
   (let [z2 (m/* X (m/t t1))
         a2 (add-bias-unit (sigmoid z2))
         z3 (m/* a2 (m/t t2))
@@ -228,19 +228,17 @@
   (fn process [λ img lbl t1 t2]
     (if (> (count lbl) 0 )
       (let [remaining (count lbl)
-            input (take batch-size img)
-            X (add-bias-unit (m/matrix input))
-            y (m/matrix (take batch-size lbl))
-            Y (labels-to-binary-matrix num-labels y)]
+            X (add-bias-unit (m/matrix img))
+            Y (labels-to-binary-matrix num-labels (m/matrix (take batch-size lbl)))]
         (let [[step-cost 
                step-t1-grad 
-               step-t2-grad] (get-cost-and-gradient λ batch-size num-labels X y Y t1 t2)]
-
+               step-t2-grad] (get-cost-and-gradient λ batch-size num-labels X Y t1 t2)]
+          
           ;;(roll-theta-to-mat (unroll-theta-to-vec t1 t2) sizex sizey 25 10)
           (prn step-cost)
           )
 
-        (set-images img-atoms input t1 t2 sizex sizey nx ny)
+        (set-images img-atoms (take 100 img) t1 t2 sizex sizey nx ny)
 
         ;; currently each iteration takes between 20-30 ms (just init/draw input/theta1)
         (swap! num-processed-atom + batch-size)
