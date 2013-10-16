@@ -18,7 +18,7 @@
   :git-dependencies [["https://github.com/dcunited001/clatrix.git" "reshape"]]
   :source-paths ["src" ".lein-git-deps/clatrix/src/"]
   
-  :jvm-opts ["-Xmx1g"]
+  :jvm-opts ["-Xmx2g"]
 ;;  :aot [digits.draw.Frame]
   :main digits.core)
 
