@@ -29,6 +29,7 @@
 
 (defn run []
   (let [λ 1
+        nexamples 10000
         theta1 (net/init-theta 25 (* sizex sizey) 0 0.12)
         theta2 (net/init-theta 10 25 0 0.12)]
 
@@ -43,13 +44,13 @@
           (ui/add-behaviors)
           (ui/show-frame))
 
-      (apply (net/process-net (* nx ny)
+      (apply (net/process-net nexamples
                               nlabels
                               sizex sizey
                               nx ny
                               num-processed
                               img-digits img-theta1 img-theta2)
-             [λ (take 10000 images) (take 10000 labels) theta1 theta2]))
+             [λ (take nexamples images) (take nexamples labels) theta1 theta2]))
 
     ))
 
