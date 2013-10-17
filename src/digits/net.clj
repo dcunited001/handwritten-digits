@@ -222,10 +222,10 @@
   "Returns a function that can process data
     m - batch size
     img-atoms references of image atoms to update"
-  [batch-size num-labels sizex sizey nx ny num-processed-atom
+  [λ batch-size num-labels sizex sizey nx ny num-processed-atom
    & img-atoms]
   
-  (fn process [λ img lbl t1 t2]
+  (fn process [img lbl t1 t2]
     (if (> (count lbl) 0 )
       (let [remaining (count lbl)
             X (add-bias-unit (m/matrix img))
@@ -245,7 +245,7 @@
        
         ;;(-> (java.util.Date.) prn)
         ;;(prn @num-processed-atom)
-        (recur λ (drop batch-size img) (drop batch-size lbl) t1 t2)
+        (recur (drop batch-size img) (drop batch-size lbl) t1 t2)
         )
       )
     

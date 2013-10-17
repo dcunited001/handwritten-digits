@@ -44,13 +44,13 @@
           (ui/add-behaviors)
           (ui/show-frame))
 
-      (apply (net/process-net nexamples
+      (apply (net/process-net λ nexamples
                               nlabels
                               sizex sizey
                               nx ny
                               num-processed
                               img-digits img-theta1 img-theta2)
-             [λ (take nexamples images) (take nexamples labels) theta1 theta2]))
+             [(take nexamples images) (take nexamples labels) theta1 theta2]))
 
     ))
 
