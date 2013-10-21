@@ -1,7 +1,8 @@
 (ns digits.net
   (:require [clatrix.core :as m]
             [digits.util :as util]
-            [digits.draw :as draw]))
+            [digits.draw :as draw]
+            [clojure.math.numeric-tower :as math]))
 
 ;; TODO: protocol for different algorithms
 
