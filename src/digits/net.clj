@@ -67,24 +67,26 @@
   (m/t (m/reshape mat 1 (* (m/ncols mat) (m/nrows mat)))))
 
 ;; should unroll
-;; [(28*28) x 25]
-;; [25 x 10]
-;; into a [19850 x 1] vector
+;; [(28*28)+1 x 25]
+;; [25+1 x 10]
+;; into a [19885 x 1] vector
 (defn unroll-theta-to-vec [t1 t2]
   (m/vstack (unroll-to-vec t1) (unroll-to-vec t2)))
 
 (defn roll-theta-to-mat [vec sizex sizey nmid nlbl]
-  (let [split-at (* sizex sizey nmid)]
- 
-    [(m/reshape (m/slice vec (range 0 split-at) 0) (* sizex sizey) nmid)
-     (m/reshape (m/slice vec (range split-at (m/nrows vec)) 0) nmid nlbl)]))
+  (let [split-at (* (+ 1 (* sizex sizey)) nmid)]
+    [(m/reshape (m/slice vec (range 0 split-at) 0) nmid (+ 1 (* sizex sizey)))
+     (m/reshape (m/slice vec (range split-at (m/nrows vec)) 0) nlbl (+ 1 nmid))]))
 
 (defn sum-matrix [mat] 
   (let [mat (double-array (m/as-vec (unroll-to-vec mat)))]
     (dbl/asum mat)))
 
 (defn cost-function 
-  "Get the cost for fitting theta1/theta2 to the input labels"
+  "Get the cost for fitting theta1/theta2 to the input labels
+    (possibly a problem with this alg 
+      - changed from ~7.00 to ~.0007
+      - when adding async (sum-matrix)"
   [lbls out]
   (/
    (+
