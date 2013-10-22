@@ -230,7 +230,7 @@
             Y (labels-to-binary-matrix num-labels (m/matrix (take batch-size lbl)))]
         (let [[step-cost 
                step-t1-grad 
-               step-t2-grad] (get-cost-and-gradient λ batch-size num-labels X Y t1 t2)]
+               step-t2-grad] (get-cost-and-gradient λ batch-size X Y t1 t2)]
           
           ;;(roll-theta-to-mat (unroll-theta-to-vec t1 t2) sizex sizey 25 10)
           (prn step-cost)
