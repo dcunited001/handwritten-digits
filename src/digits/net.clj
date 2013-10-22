@@ -223,31 +223,29 @@
   "Returns a function that can process data
     m - batch size
     img-atoms references of image atoms to update"
-  [λ batch-size num-labels sizex sizey nx ny num-processed-atom
+  [λ batch-size num-labels sizex sizey nx ny nmid num-processed-atom
    & img-atoms]
   
-  (fn process [img lbl t1 t2]
-    (if (> (count lbl) 0 )
+  (fn process [img lbl θ]
+    (if (> (count lbl) 0)
       (let [remaining (count lbl)
             X (add-bias-unit (m/matrix img))
             Y (labels-to-binary-matrix num-labels (m/matrix (take batch-size lbl)))]
-        (let [[step-cost 
-               step-t1-grad 
-               step-t2-grad] (get-cost-and-gradient λ batch-size X Y t1 t2)]
+        (let [[step-cost step-δθ] (apply (get-cost-and-gradient λ batch-size sizex sizey nmid)
+                                         [X Y θ])]
           
           ;;(roll-theta-to-mat (unroll-theta-to-vec t1 t2) sizex sizey 25 10)
           (prn step-cost)
           )
 
-        (set-images img-atoms (take 100 img) t1 t2 sizex sizey nx ny)
+        ;;(set-images img-atoms (take 100 img) t1 t2 sizex sizey nx ny)
 
         ;; currently each iteration takes between 20-30 ms (just init/draw input/theta1)
         (swap! num-processed-atom + batch-size)
        
         ;;(-> (java.util.Date.) prn)
         ;;(prn @num-processed-atom)
-        (recur (drop batch-size img) (drop batch-size lbl) t1 t2)
-        )
-      )
+        (recur (drop batch-size img) (drop batch-size lbl) θ)
+        ))
     
     ))
