@@ -89,23 +89,17 @@
 
 (defn cost-function 
   "Get the cost for fitting theta1/theta2 to the input labels"
-  [n k lbls out]
-  (let [k-ones (ones k 1)
-        m-ones (ones n 1)]
-    (/
-     (m/get (m/+
-             (-> (m/mult lbls (m/log out))
-                 (m/* k-ones)
-                 (m/t)
-                 (m/* m-ones)
-                 (m/* -1))
-             (-> (m/- 1 lbls)
-                 (m/mult (m/log (m/- 1 out)))
-                 (m/* k-ones)
-                 (m/t)
-                 (m/* m-ones)
-                 (m/* -1))) 0 0)
-     (double n))))
+  [lbls out]
+  (/
+   (+
+    (-> (m/mult lbls (m/log out))
+        (sum-matrix)
+        (* -1))
+    (-> (m/- 1 lbls)
+        (m/mult (m/log (m/- 1 out)))
+        (sum-matrix)
+        (* -1))
+    (m/nrows lbls))))
 
 (defn select-middle
   "Selects the middle of a 2d matrix"
@@ -161,16 +155,17 @@
        (-> (/ λ n)
            (m/mult theta-reg)))))
 
-(defn get-cost-and-gradient [λ batch-size num-labels X Y t1 t2]
-  (let [z2 (m/* X (m/t t1))
+(defn get-cost-and-gradient [λ batch-size num-labels X Y t1 t2] ;;[{sizex :sizex sizey :sizey nx :nx ny :ny}]
+  (let [;;[t1 t2] (roll-theta-to-mat sizex sizey nmid (m/ncols Y))
+        z2 (m/* X (m/t t1))
         a2 (add-bias-unit (sigmoid z2))
         z3 (m/* a2 (m/t t2))
         a3 (sigmoid z3)
-
+        
         t1-reg (remove-bias-unit t1)
         t2-reg (remove-bias-unit t2)
         
-        cost (cost-function batch-size num-labels Y a3)
+        cost (cost-function Y a3)
 
         reg (* (/ λ (* 2 batch-size))
                (+ (regularize-theta t1-reg)
@@ -186,8 +181,9 @@
         t2-grad (get-theta-gradient a2 t2-reg d3 batch-size λ)
         t1-grad (get-theta-gradient X t1-reg d2 batch-size λ)
         ]
-    [cost-reg t1-grad t2-grad]
-))
+    
+  [cost-reg (unroll-theta-to-vec t1-grad t2-grad)]
+  ))
 
 ;; Wolfe Conditions
 ;; Polack-Ribiere flavor of conjugate gradients
