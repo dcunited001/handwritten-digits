@@ -16,6 +16,7 @@
 
 (def nx 10)
 (def ny 10)
+(def nmid 25)
 (def nlabels 10)
 
 ;; store images in atoms, then swap & render
