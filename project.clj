@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/math.numeric-tower "0.0.2"]
+                 [prismatic/hiphip "0.1.0"]
                  ;;[clatrix "0.3.0"] ;; loading from dcunited001/clatrix
                  [slingshot "0.10.3"]
                  [org.jblas/jblas "1.2.3"]

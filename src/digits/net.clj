@@ -2,7 +2,8 @@
   (:require [clatrix.core :as m]
             [digits.util :as util]
             [digits.draw :as draw]
-            [clojure.math.numeric-tower :as math]))
+            [clojure.math.numeric-tower :as math]
+            [hiphip.double :as dbl]))
 
 ;; TODO: protocol for different algorithms
 
