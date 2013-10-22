@@ -75,11 +75,7 @@
 
 (defn roll-theta-to-mat [vec sizex sizey nmid nlbl]
   (let [split-at (* sizex sizey nmid)]
-
-    ;;(prn (count t1-range))
-    ;;(prn (count t2-range))
-    ;;(prn (m/slice vec t1-range 0))
-
+ 
     [(m/reshape (m/slice vec (range 0 split-at) 0) (* sizex sizey) nmid)
      (m/reshape (m/slice vec (range split-at (m/nrows vec)) 0) nmid nlbl)]))
 
@@ -155,7 +151,7 @@
        (-> (/ λ n)
            (m/mult theta-reg)))))
 
-(defn get-cost-and-gradient [λ batch-size num-labels X Y t1 t2] ;;[{sizex :sizex sizey :sizey nx :nx ny :ny}]
+(defn get-cost-and-gradient [λ batch-size X Y t1 t2] ;;[{sizex :sizex sizey :sizey nx :nx ny :ny}]
   (let [;;[t1 t2] (roll-theta-to-mat sizex sizey nmid (m/ncols Y))
         z2 (m/* X (m/t t1))
         a2 (add-bias-unit (sigmoid z2))
