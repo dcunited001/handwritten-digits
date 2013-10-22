@@ -153,35 +153,36 @@
        (-> (/ λ n)
            (m/mult theta-reg)))))
 
-(defn get-cost-and-gradient [λ batch-size X Y t1 t2] ;;[{sizex :sizex sizey :sizey nx :nx ny :ny}]
-  (let [;;[t1 t2] (roll-theta-to-mat sizex sizey nmid (m/ncols Y))
-        z2 (m/* X (m/t t1))
-        a2 (add-bias-unit (sigmoid z2))
-        z3 (m/* a2 (m/t t2))
-        a3 (sigmoid z3)
-        
-        t1-reg (remove-bias-unit t1)
-        t2-reg (remove-bias-unit t2)
-        
-        cost (cost-function Y a3)
+(defn get-cost-and-gradient [λ batch-size sizex sizey nmid]
+  (fn get-cg [X Y θ]
+    ;;(prn θ)
+    (let [[t1 t2] (roll-theta-to-mat θ sizex sizey nmid (m/ncols Y))
+          z2 (m/* X (m/t t1))
+          a2 (add-bias-unit (sigmoid z2))
+          z3 (m/* a2 (m/t t2))
+          a3 (sigmoid z3)
+          
+          t1-reg (remove-bias-unit t1)
+          t2-reg (remove-bias-unit t2)
+          
+          cost (cost-function Y a3)
 
-        reg (* (/ λ (* 2 batch-size))
-               (+ (regularize-theta t1-reg)
-                  (regularize-theta t2-reg)))
+          reg (* (/ λ (* 2 batch-size))
+                 (+ (regularize-theta t1-reg)
+                    (regularize-theta t2-reg)))
 
-        cost-reg (+ cost reg)
+          cost-reg (+ cost reg)
 
-        d3 (m/- a3 Y)
+          d3 (m/- a3 Y)
 
-        d2 (m/mult (m/* d3 t2-reg)
-                   (m/t (sigmoid-gradient (sigmoid z2))))
+          d2 (m/mult (m/* d3 t2-reg)
+                     (m/t (sigmoid-gradient (sigmoid z2))))
 
-        t2-grad (get-theta-gradient a2 t2-reg d3 batch-size λ)
-        t1-grad (get-theta-gradient X t1-reg d2 batch-size λ)
-        ]
+          t2-grad (get-theta-gradient a2 t2-reg d3 batch-size λ)
+          t1-grad (get-theta-gradient X t1-reg d2 batch-size λ)]
     
-  [cost-reg (unroll-theta-to-vec t1-grad t2-grad)]
-  ))
+      [cost-reg (unroll-theta-to-vec t1-grad t2-grad)]
+      )))
 
 ;; Wolfe Conditions
 ;; Polack-Ribiere flavor of conjugate gradients
