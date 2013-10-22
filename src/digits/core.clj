@@ -49,10 +49,12 @@
                               nlabels
                               sizex sizey
                               nx ny
+                              nmid
                               num-processed
                               img-digits img-theta1 img-theta2)
-             [(take nexamples images) (take nexamples labels) theta1 theta2]))
-
+             [(take nexamples images)
+              (take nexamples labels)
+              (net/unroll-theta-to-vec theta1 theta2)]))
     ))
 
 (defn -main [& args]
